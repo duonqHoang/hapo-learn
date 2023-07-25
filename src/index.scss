@@ -1,0 +1,22 @@
+@font-face {
+  font-family: "UTM BryantLG";
+  src: local("UTM BryantLG"),
+    url("../public/fonts/UTM_BryantLG.ttf") format("truetype");
+}
+@font-face {
+  font-family: "UTM BryantLG Bold";
+  src: local("UTM BryantLG Bold"),
+    url("../public/fonts/UTMBryantLGBold.ttf") format("truetype");
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@import "~bootstrap/scss/bootstrap";
+
+:root {
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+}
