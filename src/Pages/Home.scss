@@ -6,6 +6,29 @@
   border-radius: 35px;
 }
 
+@mixin sectionTitle() {
+  text-align: center;
+  font-size: 80px;
+  font-family: "UTM BryantLG Bold", sans-serif;
+  font-weight: 700;
+  line-height: 98px;
+  letter-spacing: -0.02em;
+  color: #11114e;
+}
+
+@mixin greenHrBar() {
+  background-color: #b2d235;
+  border-radius: 3px;
+  display: block;
+  height: 6px;
+}
+
+@mixin flex-vertical-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .homePage {
   font-family: "UTM BryantLG", sans-serif;
 }
@@ -15,12 +38,13 @@
   background-position: right;
   width: 100%;
   height: 655px;
+  position: relative;
 }
 
 .banner-content {
   position: absolute;
   left: 59px;
-  top: 43%;
+  top: 23%;
 
   .banner-content--normal {
     color: #11114e;
@@ -68,9 +92,7 @@
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
 
   .card-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include flex-vertical-center();
   }
 
   .cardImg-container {
@@ -106,26 +128,15 @@
 
 .otherCourses {
   margin-top: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex-vertical-center();
 
   h1 {
-    text-align: center;
-    font-size: 80px;
-    font-family: "UTM BryantLG Bold", sans-serif;
-    font-weight: 700;
-    line-height: 98px;
-    letter-spacing: -0.02em;
-    color: #11114e;
+    @include sectionTitle();
   }
   .greenBar {
-    background-color: #b2d235;
     width: 480px;
-    height: 6px;
-    border-radius: 3px;
-    display: block;
     margin: 15px 0 45px;
+    @include greenHrBar();
   }
 
   a {
@@ -176,5 +187,91 @@
     position: absolute;
     top: 50px;
     right: 20px;
+  }
+}
+
+.feedBack {
+  margin-top: 80px;
+  @include flex-vertical-center();
+
+  h1 {
+    @include sectionTitle();
+  }
+  .greenBar {
+    width: 328px;
+    margin-bottom: 25px;
+    @include greenHrBar();
+  }
+  .intro {
+    color: #505353;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    white-space: pre-wrap;
+  }
+}
+
+.membership {
+  margin-top: 100px;
+  width: 100%;
+  height: 500px;
+  background: url("../../public/images/background-2.png");
+  justify-content: center;
+  @include flex-vertical-center();
+
+  h1 {
+    color: #fff;
+    text-align: center;
+    font-family: "UTM BryantLG Bold", sans-serif;
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -1.2px;
+    white-space: pre-wrap;
+  }
+
+  button {
+    margin-top: 14px;
+    border: none;
+    color: #90ab26;
+    font-family: UTM BryantLG;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    width: 377px;
+    height: 70px;
+    flex-shrink: 0;
+    border-radius: 35px;
+    background: #fff;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  }
+}
+
+.statistic {
+  min-height: 500px;
+  @include flex-vertical-center();
+
+  h1 {
+    margin-top: 50px;
+    @include sectionTitle();
+  }
+  .greenBar {
+    width: 276px;
+    margin-bottom: 35px;
+    @include greenHrBar();
+  }
+  .statType {
+    color: #505353;
+    font-family: UTM BryantLG;
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -3px;
+  }
+  .number {
+    color: #b2d235;
+    font-family: UTM BryantLG;
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -3px;
   }
 }

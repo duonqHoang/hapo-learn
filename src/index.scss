@@ -12,11 +12,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 @import "~bootstrap/scss/bootstrap";
 
-:root {
-  box-sizing: border-box;
-}
+@import "slick-carousel/slick/slick.scss";
+@import "slick-carousel/slick/slick-theme.scss";
 
-body {
-  width: 100%;
-  margin: 0;
+*,
+::before,
+::after {
+  box-sizing: border-box;
 }

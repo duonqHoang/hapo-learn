@@ -1,6 +1,8 @@
 import Navbar from "../Components/Navbar";
 import "./Home.scss";
 import { Row, Col } from "react-bootstrap";
+import ReviewsCarousel from "../Components/ReviewsCarousel";
+import Footer from "../Components/Footer";
 
 export default function Home() {
   return (
@@ -75,6 +77,46 @@ export default function Home() {
         })}
         <img src="images/devices.png" alt="Some technology devices" />
       </section>
+      <section className="feedBack">
+        <h1>Feedback</h1>
+        <div className="greenBar"></div>
+        <p className="intro">
+          What other students turned professionals have to say about us{"\n"}{" "}
+          after learning with us and reaching their goals
+        </p>
+        <ReviewsCarousel />
+      </section>
+      <section className="membership">
+        <h1>Become a member of our{"\n"}growing community!</h1>
+        <button>Start Learning Now!</button>
+      </section>
+      <section className="statistic">
+        <h1>Statistic</h1>
+        <div className="greenBar" />
+        <Row
+          className="justify-content-around"
+          lg={4}
+          md={4}
+          style={{
+            width: "90%",
+            textAlign: "center",
+          }}
+        >
+          <Col>
+            <div className="statType">Courses</div>
+            <div className="number">1234</div>
+          </Col>
+          <Col>
+            <div className="statType">Lessons</div>
+            <div className="number">1234</div>
+          </Col>
+          <Col>
+            <div className="statType">Learners</div>
+            <div className="number">1234</div>
+          </Col>
+        </Row>
+      </section>
+      <Footer />
     </div>
   );
 }
