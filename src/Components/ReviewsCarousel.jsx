@@ -6,20 +6,22 @@ export default function ReviewsCarousel() {
     dots: false,
     infinite: true,
     speed: 500,
-    autoPlay: true,
+    autoplay: true,
     autoplaySpeed: 2000,
     slidesToShow: 2,
     slidesToScroll: 1,
-    nextArrow: (
-      <img className="nextArrow" src="images/nextArrow.png" alt="Next Arrow" />
-    ),
-    prevArrow: (
-      <img
-        className="prevArrow"
-        src="images/prevArrow.png"
-        alt="Previous Arrow"
-      />
-    ),
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 991,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+    nextArrow: <img src="images/nextArrow.png" alt="Next Arrow" />,
+    prevArrow: <img src="images/prevArrow.png" alt="Previous Arrow" />,
   };
   const reviews = [
     {

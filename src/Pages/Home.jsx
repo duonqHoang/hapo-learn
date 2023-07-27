@@ -24,27 +24,24 @@ export default function Home() {
         </div>
       </div>
       <div className="banner-back"></div>
-      <Row
-        className="justify-content-center"
-        lg={4}
-        style={{ margin: "-80px auto", gap: "20px" }}
-      >
-        <CourseCards />
-      </Row>
+      <div className="courses-row">
+        <Row style={{ margin: "-80px auto", rowGap: "30px", width: "85%" }}>
+          <CourseCards />
+        </Row>
+      </div>
 
       <section className="otherCourses">
         <h1>Other courses</h1>
         <div className="greenBar"></div>
-        <Row
-          className="justify-content-center"
-          lg={4}
-          style={{ margin: " auto", gap: "20px" }}
-        >
+
+        <Row style={{ margin: " auto", rowGap: "30px", width: "85%" }}>
           <CourseCards />
         </Row>
+
         <a href="" style={{ textDecoration: "none" }}>
           View All Our Courses{" "}
           <svg
+            className="view-all-arrow"
             width="48"
             height="27"
             viewBox="0 0 48 27"
@@ -59,7 +56,8 @@ export default function Home() {
         </a>
       </section>
       <section className="whyHapo">
-        <h1>Why HapoLearn?</h1>
+        <img className="laptop" src="images/laptop.png" alt="a laptop" />
+        <h1>Why {"\n"}HapoLearn?</h1>
         {[1, 2, 3, 4, 5].map((_, i) => {
           return (
             <div key={i} className="whyHapo__reason">
@@ -94,23 +92,22 @@ export default function Home() {
         <h1>Statistic</h1>
         <div className="greenBar" />
         <Row
-          className="justify-content-around"
-          lg={4}
-          md={4}
+          className="justify-content-between"
           style={{
             width: "90%",
             textAlign: "center",
+            marginBottom: "50px",
           }}
         >
-          <Col>
+          <Col lg={4} md={4} sm={12} xs={12}>
             <div className="statType">Courses</div>
             <div className="number">1234</div>
           </Col>
-          <Col>
+          <Col lg={4} md={4} sm={12} xs={12}>
             <div className="statType">Lessons</div>
             <div className="number">1234</div>
           </Col>
-          <Col>
+          <Col lg={4} md={4} sm={12} xs={12}>
             <div className="statType">Learners</div>
             <div className="number">1234</div>
           </Col>
@@ -124,7 +121,7 @@ export default function Home() {
 function CourseCards() {
   return [1, 2, 3].map(() => {
     return (
-      <Col>
+      <Col lg={4} md={12}>
         <div className="courseCard">
           <div className="cardImg-container">
             <img

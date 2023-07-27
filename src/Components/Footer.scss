@@ -1,0 +1,120 @@
+.footer-links {
+  position: relative;
+  display: flex;
+  width: 100%;
+  background: #505353;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  padding: 70px 0 25px;
+
+  ul {
+    list-style-type: none;
+  }
+  li {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 45px;
+  }
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+}
+.hapo {
+  position: absolute;
+  left: 30px;
+  top: 45px;
+
+  .logo-text {
+    white-space: pre-wrap;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 400;
+    position: relative;
+    left: 65px;
+  }
+}
+.icons {
+  position: absolute;
+  right: 200px;
+  display: flex;
+  gap: 20px;
+  top: 120px;
+}
+.rights {
+  width: 100%;
+  text-align: center;
+  background: #454545;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 10px 0;
+}
+
+@media screen and (max-width: 991px) {
+  .footer-links {
+    gap: 40px;
+    padding: 20px 0 0;
+
+    li {
+      font-size: 18px;
+    }
+  }
+
+  .hapo {
+    img {
+      width: 185px;
+    }
+
+    .logo-text {
+      font-size: 16px;
+      left: 0;
+    }
+  }
+
+  .icons {
+    top: 60px;
+    right: 30px;
+
+    img {
+      width: 40px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .footer-links {
+    gap: 100px;
+    padding: 20px 0 170px;
+
+    li {
+      font-size: 17px;
+    }
+  }
+
+  .hapo {
+    top: unset;
+    bottom: 50px;
+
+    img {
+      width: 150px;
+    }
+
+    .logo-text {
+      font-size: 14px;
+      left: 0;
+    }
+  }
+
+  .icons {
+    top: unset;
+    bottom: 90px;
+    right: 30px;
+
+    img {
+      width: 30px;
+    }
+  }
+}

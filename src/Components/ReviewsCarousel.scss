@@ -1,6 +1,6 @@
 .carousel {
   margin-top: 40px;
-  width: 80%;
+  width: 90%;
 
   .reviewBox {
     margin: auto;
@@ -45,6 +45,22 @@
       font-weight: 700;
     }
   }
+
+  .slick-next {
+    right: 36px;
+    top: 40%;
+    width: 30px;
+    height: 30px;
+    z-index: 1;
+  }
+
+  .slick-prev {
+    width: 30px;
+    height: 30px;
+    left: 36px;
+    top: 40%;
+    z-index: 1;
+  }
 }
 
 .reviewBox::after {
@@ -68,6 +84,7 @@
   background: #d9dadc;
 }
 
+/*
 .nextArrow,
 .prevArrow {
   position: absolute;
@@ -80,4 +97,26 @@
 }
 .prevArrow {
   left: 20px;
+}
+*/
+@media screen and (max-width: 991px) {
+  .carousel {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .carousel {
+    .reviewBox {
+      width: 500px;
+    }
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .carousel {
+    .reviewBox {
+      width: 350px;
+    }
+  }
 }
