@@ -8,7 +8,7 @@ export default function PageControl() {
         className="back"
         linkClassName="page-a"
       ></Pagination.Prev>
-      {[1, 2, 3, 4, 5].map((item) => {
+      {[1, 2, 3].map((item) => {
         return <Pagination.Item linkClassName="page-a">{item}</Pagination.Item>;
       })}
       <Pagination.Next

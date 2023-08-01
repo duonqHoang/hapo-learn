@@ -216,6 +216,11 @@
     line-height: normal;
   }
 
+  .ratings-count {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
   .ratings-chart {
     border: 1px solid #dfdfdf;
     border-radius: 5px;
@@ -343,6 +348,12 @@
       font-weight: 700;
       letter-spacing: -0.44px;
       display: inline-block;
+    }
+
+    .txtarea-title {
+      color: #747474;
+      font-size: 18px;
+      letter-spacing: -0.36px;
     }
 
     .submit-btn {

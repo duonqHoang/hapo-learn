@@ -13,7 +13,7 @@ import "./DetailCourse.scss";
 import { useState } from "react";
 import SearchBox from "../Components/SearchBox";
 import PageControl from "../Components/PageControl";
-import { Rating } from "@smastrom/react-rating";
+import { Rating, Star } from "@smastrom/react-rating";
 
 const course = {
   img: "images/courses/html.png",
@@ -57,7 +57,7 @@ const teachers = [
 const reviews = [
   {
     user: { name: "Nam Hoang", avatar: "images/user-avatar.jpg" },
-    star: 1,
+    star: 4,
     comment:
       "Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque. Pellentesque tristique",
     time: "August 4, 2020 at 1:30 pm",
@@ -383,6 +383,12 @@ function Teachers({ teachers }) {
   );
 }
 
+const starStyles = {
+  itemShapes: Star,
+  activeFillColor: "#FFD567",
+  inactiveFillColor: "#D8D8D8",
+};
+
 function Reviews({ reviews }) {
   const reviewsCount = reviews.length;
   const starCounts = [0, 0, 0, 0, 0];
@@ -406,11 +412,14 @@ function Reviews({ reviews }) {
               <div className="rating-summary">
                 <div className="averageRating">{averageRating}</div>
                 <Rating
+                  itemStyles={starStyles}
+                  spaceBetween="small"
+                  spaceInside="medium"
                   style={{ maxWidth: "180px" }}
-                  value={parseInt(averageRating)}
+                  value={averageRating}
                   readOnly
                 />
-                <div>{reviewsCount} Ratings</div>
+                <span className="ratings-count">{reviewsCount} Ratings</span>
               </div>
             </Col>
             <Col lg={7}>
@@ -455,6 +464,7 @@ function Reviews({ reviews }) {
               <div className="user-name">{user.name}</div>
               <div style={{ display: "block", marginLeft: "15px" }}>
                 <Rating
+                  itemStyles={starStyles}
                   value={review.star}
                   style={{ maxWidth: 100 }}
                   readOnly
@@ -483,14 +493,22 @@ function Reviews({ reviews }) {
       <div className="review-form">
         <h2>Leave a Review</h2>
         <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Message</Form.Label>
+          <Form.Group className="mb-3 mt-2">
+            <Form.Label className="txtarea-title">Message</Form.Label>
             <Form.Control as="textarea" rows={3} />
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="d-flex align-items-center gap-3">
             <Form.Label as="h2">Vote</Form.Label>
-            <Rating value={3} style={{ maxWidth: 120 }} />
-            <span style={{ marginLeft: "25px", color: "#747474" }}>
+            <div>
+              <Rating
+                itemStyles={starStyles}
+                style={{ maxWidth: 85 }}
+                spaceBetween="small"
+                spaceInside="none"
+              />
+            </div>
+
+            <span style={{ marginLeft: "20px", color: "#747474" }}>
               (stars)
             </span>
           </Form.Group>
