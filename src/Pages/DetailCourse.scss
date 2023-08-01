@@ -1,0 +1,496 @@
+@use "common";
+
+.course-container {
+  background-color: #f2f2f2;
+  font-family: "UTM BryantLG", sans-serif;
+  padding: 35px;
+}
+
+.img-container {
+  height: 100%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    padding: 50px 0;
+    width: 50%;
+    display: block;
+  }
+}
+
+.desciption {
+  padding: 15px;
+  background-color: white;
+
+  h3 {
+    font-family: "UTM BryantLG Bold";
+    color: #505353;
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #b2d235;
+  }
+
+  p {
+    text-align: justify;
+    color: #949292;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 26px;
+    letter-spacing: -0.36px;
+  }
+}
+
+.course-contents {
+  background-color: white;
+  padding: 0 20px;
+  padding-bottom: 40px;
+  border-radius: 10px;
+  margin-top: 30px;
+
+  .buttons {
+    border-bottom: 2px solid #dadada;
+    display: flex;
+    gap: 35px;
+
+    span {
+      display: inline-block;
+      padding: 20px 25px;
+      display: block;
+      color: #505353;
+      font-size: 20px;
+      font-weight: 550;
+      letter-spacing: -0.4px;
+    }
+
+    span:hover {
+      color: #b2d235;
+    }
+
+    .current {
+      color: #b2d235;
+      border-bottom: 2px solid #b2d235;
+    }
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .search-box {
+      display: block;
+      padding: 10px 10px;
+      width: 70%;
+      border-radius: 5px;
+      border: 1px solid #c4c4c4;
+      background: #fff;
+    }
+
+    button {
+      font-family: "UTM BryantLG Bold";
+      padding: 10px 15px;
+      @include common.greenButton();
+      border-radius: 5px;
+    }
+  }
+  .course-enroll {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      font-family: "UTM BryantLG Bold";
+      padding: 10px 30px;
+      @include common.greenButton();
+    }
+  }
+
+  .lesson {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #dadada;
+    color: #505353;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.36px;
+    padding: 15px 0;
+
+    button {
+      font-family: "UTM BryantLG Bold";
+      padding: 4px 20px;
+      max-height: 35px;
+      @include common.greenButton();
+    }
+  }
+
+  .teacher {
+    margin-bottom: 65px;
+  }
+
+  .teachers-title {
+    color: #505353;
+    font-family: "UTM BryantLG Bold";
+    font-size: 25px;
+    font-weight: 700;
+    margin: 30px 0;
+  }
+
+  .teacher-info {
+    display: flex;
+    align-items: center;
+    column-gap: 23px;
+
+    img {
+      width: 100px;
+    }
+    .teacher-name {
+      color: #505353;
+      font-family: "UTM BryantLG Bold";
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .teacher-position {
+      color: #bdb9b9;
+      font-size: 14px;
+    }
+    .social-links {
+      display: flex;
+      column-gap: 10px;
+      margin-top: 7px;
+    }
+    .social-links > a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid red;
+    }
+  }
+  .teacher-description {
+    margin-top: 15px;
+    color: #949292;
+    font-size: 18px;
+    line-height: 26px;
+    text-align: justify;
+  }
+
+  .reviews-title {
+    color: #505353;
+    width: 100%;
+    display: block;
+    font-family: "UTM BryantLG Bold";
+    font-size: 25px;
+    font-weight: 700;
+    padding: 30px 0 12px;
+    border-bottom: 1px solid #f3f0f0;
+  }
+
+  .ratings {
+    margin-top: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #f3f0f0;
+  }
+
+  .rating-summary {
+    display: flex;
+    color: white;
+    height: 100%;
+    border-radius: 5px;
+    background: #505353;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .averageRating {
+    font-family: "UTM BryantLG Bold";
+    font-size: 60px;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .ratings-count {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .ratings-chart {
+    border: 1px solid #dfdfdf;
+    border-radius: 5px;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .rating-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rating-star {
+    width: 55px;
+    color: #505353;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .rating-bar-container {
+    width: 75%;
+  }
+
+  .progress {
+    height: 6px;
+    position: relative;
+    top: 3px;
+  }
+
+  .progress-bar {
+    background: #b2d235;
+    height: 6px;
+  }
+
+  .filter-button {
+    font-family: "UTM BryantLG Bold";
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.36px;
+    padding: 0;
+  }
+
+  .filter-button,
+  .filter-button:hover,
+  .filter-button:active:focus,
+  .filter-button:active,
+  .filter-button:focus,
+  .filter-button:checked {
+    background-color: transparent;
+    color: #505353;
+    border: none;
+  }
+
+  .review {
+    border-bottom: 1px solid #f3f0f0;
+  }
+
+  .review-header {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+
+    img {
+      width: 40px;
+      border-radius: 50%;
+    }
+  }
+
+  .review-text {
+    color: #949292;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: -0.36px;
+    margin-top: 15px;
+  }
+
+  .reply {
+    margin-left: 100px;
+    border-top: 1px solid #f3f0f0;
+    padding-top: 7px;
+
+    .review-text {
+      margin-left: 50px;
+      margin-top: 0;
+    }
+  }
+
+  .reply-header {
+    display: flex;
+    align-items: center;
+    img {
+      width: 40px;
+      border-radius: 50%;
+    }
+  }
+
+  .user-name {
+    margin-left: 10px;
+    color: #505353;
+    font-family: "UTM BryantLG Bold";
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.36px;
+  }
+  .review-time {
+    margin-left: 30px;
+    color: #bdb9b9;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
+
+  .review-form {
+    padding-top: 25px;
+
+    h2 {
+      color: #505353;
+      font-family: "UTM BryantLG Bold";
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.44px;
+      display: inline-block;
+    }
+
+    .txtarea-title {
+      color: #747474;
+      font-size: 18px;
+      letter-spacing: -0.36px;
+    }
+
+    .submit-btn {
+      display: block;
+      margin-left: auto;
+      padding: 4px 23px;
+      color: #fff;
+      font-family: "UTM BryantLG Bold";
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.75px;
+      @include common.greenButton();
+    }
+  }
+}
+
+.course-info {
+  background-color: white;
+  font-size: 25px;
+  margin-top: 30px;
+
+  .info-col {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #d1d1d1;
+    position: relative;
+
+    img {
+      position: relative;
+      bottom: 3px;
+      margin-right: 10px;
+    }
+
+    .colon {
+      position: absolute;
+      left: 50%;
+    }
+
+    .info-left {
+      display: block;
+      position: absolute;
+      left: 20px;
+    }
+
+    .info-right {
+      display: block;
+      margin-left: 60%;
+      margin-right: 20px;
+    }
+  }
+}
+
+.course-suggestions {
+  background-color: white;
+  margin-top: 30px;
+  padding-bottom: 35px;
+
+  .title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: #b2d235;
+    color: #fff;
+    font-family: "UTM BryantLG Bold";
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -1.25px;
+    padding: 15px 0;
+  }
+  li {
+    border-bottom: 1px solid #d1d1d1;
+    padding: 15px 0;
+    color: #505353;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.32px;
+    font-family: UTM BryantLG;
+    margin-right: 20px;
+  }
+  li:hover {
+    color: #b2d235;
+  }
+  button {
+    padding: 10px 24px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.9px;
+    margin: auto;
+    margin-top: 25px;
+    display: block;
+    @include common.greenButton();
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .course-contents {
+    .buttons {
+      span {
+        font-size: 20px;
+        padding: 20px 10px;
+      }
+    }
+
+    .course-enroll {
+      margin-top: 20px;
+      justify-content: center;
+    }
+  }
+  .course-info {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .course-container {
+    padding: 35px 0;
+  }
+  .course-contents {
+    .buttons {
+      gap: 0;
+
+      span {
+        font-size: 18px;
+        padding: 20px 10px;
+      }
+    }
+    .search > button {
+      padding: 10px 4px;
+    }
+    .course-enroll {
+      margin-top: 20px;
+      justify-content: center;
+    }
+  }
+  .course-info {
+    font-size: 18px;
+  }
+}
