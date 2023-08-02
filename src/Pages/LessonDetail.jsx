@@ -114,7 +114,9 @@ export default function LessonDetail() {
                     {course.tags.map((tag, i) => {
                       return (
                         <>
-                          <a href="#">{tag}</a>
+                          <a key={i} href="#">
+                            {tag}
+                          </a>
                           {i === course.tags.length - 1 ? "" : ", "}
                         </>
                       );
@@ -195,7 +197,11 @@ function Descriptions() {
         <div className="tags-title">Tags:</div>
         <div className="tags">
           {lesson.tags.map((tag, i) => {
-            return <div className="tag">{tag}</div>;
+            return (
+              <div key={i} className="tag">
+                {tag}
+              </div>
+            );
           })}
         </div>
       </div>
@@ -207,9 +213,9 @@ function Documents() {
   return (
     <div className="documents">
       <span className="program-txt">Program</span>
-      {lesson.documents.map((document) => {
+      {lesson.documents.map((document, i) => {
         return (
-          <div className="document-row">
+          <div className="document-row" key={i}>
             <div className="document-row-left">
               {document.type === "Lesson"
                 ? lessonIcon
