@@ -171,9 +171,9 @@ export default function AllCourses() {
         </div>
       </Collapse>
       <div className="courses">
-        {courses.map((course) => {
+        {courses.map((course,i) => {
           return (
-            <div className="course-card">
+            <div key={i} className="course-card">
               <div className="course-info">
                 <img src={course.img} />
                 <div>
