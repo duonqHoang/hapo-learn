@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./Pages/Home";
 import DetailCourse from "./Pages/DetailCourse";
+import LessonDetail from "./Pages/LessonDetail";
 import AllCourses from "./Pages/AllCourses";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
@@ -11,8 +12,14 @@ function App() {
       path: "/",
       children: [
         { index: true, element: <Home /> },
-        { path: "/all-courses", element: <AllCourses /> },
-        { path: "/course-detail", element: <DetailCourse /> },
+
+        {
+          path: "course/:id",
+          element: <DetailCourse />,
+        },
+        { path: "course/:id/lesson", element: <LessonDetail /> },
+
+
       ],
     },
   ]);
