@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./Pages/Home";
 import DetailCourse from "./Pages/DetailCourse";
+import Profile from "./Pages/Profile";
 
 function App() {
   const router = createBrowserRouter([
@@ -9,6 +10,7 @@ function App() {
       children: [
         { index: true, element: <Home /> },
         { path: "/course-detail", element: <DetailCourse /> },
+        { path: "profile", element: <Profile /> },
       ],
     },
   ]);
