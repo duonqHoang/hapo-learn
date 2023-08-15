@@ -1,6 +1,8 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./Pages/Home";
 import DetailCourse from "./Pages/DetailCourse";
+
+import Profile from "./Pages/Profile";
 import LessonDetail from "./Pages/LessonDetail";
 import AllCourses from "./Pages/AllCourses";
 import Navbar from "./Components/Navbar";
@@ -14,6 +16,7 @@ function App() {
       children: [
         { index: true, element: <Home /> },
         { path: "signIn", element: <SignIn /> },
+        { path: "profile", element: <Profile /> },
         {
           path: "course/:id",
           element: <DetailCourse />,
