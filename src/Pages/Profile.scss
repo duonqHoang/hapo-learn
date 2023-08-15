@@ -1,3 +1,5 @@
+@use "common";
+
 .profile-page {
   padding: 40px 135px;
   background-color: #f2f2f2;
@@ -168,6 +170,38 @@
     .add-course-btn:hover {
       opacity: 80%;
     }
+  }
+}
+
+.profile-form {
+  .input-label {
+    color: #505353;
+    font-family: "UTM BryantLG Bold";
+    font-size: 20px;
+    letter-spacing: -0.4px;
+    width: 100%;
+  }
+
+  .submit-profile-btn {
+    font-size: 18px;
+    font-weight: 700;
+    padding: 10px 30px;
+    margin-top: 25px;
+    margin-left: auto;
+    display: block;
+    @include common.greenButton();
+  }
+
+  .dob-input {
+    display: block;
+    background: url("../../public/images/calendar.svg") no-repeat 95%, white;
+  }
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+
+  input.form-control {
+    padding: 12px 10px;
   }
 }
 

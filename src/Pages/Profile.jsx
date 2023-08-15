@@ -1,7 +1,10 @@
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Form } from "react-bootstrap";
 import { FaCamera } from "react-icons/fa";
 import "./Profile.scss";
 import { FaBirthdayCake, FaPhoneAlt, FaHome } from "react-icons/fa";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { forwardRef, useState } from "react";
 
 const user = {
   name: "Võ Hoài Nam",
@@ -24,6 +27,19 @@ const courses = [
 ];
 
 export default function Profile() {
+  const [dob, setDob] = useState(new Date());
+
+  const CustomDobInput = forwardRef(({ value, onClick, onChange }, ref) => (
+    <Form.Control
+      className="dob-input"
+      value={value}
+      onClick={onClick}
+      onChange={onChange}
+      ref={ref}
+      placeholder="dd/mm/yyyy"
+    ></Form.Control>
+  ));
+
   return (
     <div className="profile-page">
       <Container>
@@ -101,6 +117,60 @@ export default function Profile() {
                   <div className="green-hr-line" />
                   <div className="green-hr-line" />
                 </div>
+              </div>
+              <div className="profile-form">
+                <Form>
+                  <Row>
+                    <Col xl={6}>
+                      <Form.Group className="mt-3">
+                        <Form.Label className="input-label">Name</Form.Label>
+                        <Form.Control placeholder="Name" />
+                      </Form.Group>
+                      <Form.Group className="mt-3">
+                        <Form.Label className="input-label">
+                          Date of birthday
+                        </Form.Label>
+                        <DatePicker
+                          placeholderText="dd/mm/yyyy"
+                          dateFormat="dd/MM/yyyy"
+                          customInput={<CustomDobInput />}
+                          selected={dob}
+                          onChange={(date) => setDob(date)}
+                        />
+                      </Form.Group>
+                      <Form.Group className="mt-3">
+                        <Form.Label className="input-label">Address</Form.Label>
+                        <Form.Control placeholder="Address" />
+                      </Form.Group>
+                    </Col>
+                    <Col xl={6}>
+                      <Form.Group className="mt-3">
+                        <Form.Label className="input-label">Email</Form.Label>
+                        <Form.Control
+                          type="email"
+                          placeholder="Your email..."
+                        />
+                      </Form.Group>
+                      <Form.Group className="mt-3">
+                        <Form.Label className="input-label">Phone</Form.Label>
+                        <Form.Control placeholder="Your phone number..." />
+                      </Form.Group>
+                      <Form.Group className="mt-3">
+                        <Form.Label className="input-label">
+                          About me
+                        </Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={3}
+                          placeholder="About you..."
+                        />
+                      </Form.Group>
+                      <button className="submit-profile-btn" type="submit">
+                        Submit
+                      </button>
+                    </Col>
+                  </Row>
+                </Form>
               </div>
             </div>
           </Col>
