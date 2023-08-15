@@ -5,6 +5,7 @@ import LessonDetail from "./Pages/LessonDetail";
 import AllCourses from "./Pages/AllCourses";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
   const router = createBrowserRouter([
@@ -12,14 +13,12 @@ function App() {
       path: "/",
       children: [
         { index: true, element: <Home /> },
-
+        { path: "reset-password", element: <ResetPassword /> },
         {
           path: "course/:id",
           element: <DetailCourse />,
         },
         { path: "course/:id/lesson", element: <LessonDetail /> },
-
-
       ],
     },
   ]);
