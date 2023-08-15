@@ -7,6 +7,7 @@ import LessonDetail from "./Pages/LessonDetail";
 import AllCourses from "./Pages/AllCourses";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
+import ResetPassword from "./Pages/ResetPassword";
 import SignUp from "./Pages/SignUp";
 import SignIn from "./Pages/SignIn";
 
@@ -16,6 +17,7 @@ function App() {
       path: "/",
       children: [
         { index: true, element: <Home /> },
+        { path: "reset-password", element: <ResetPassword /> },
         { path: "signUp", element: <SignUp /> },
         { path: "signIn", element: <SignIn /> },
         { path: "profile", element: <Profile /> },
