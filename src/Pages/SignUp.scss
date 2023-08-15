@@ -1,0 +1,60 @@
+@use "common";
+
+.sign-up-page {
+  background-color: #f2f2f2;
+  width: 100%;
+  padding: 100px 0;
+  font-family: Arial;
+}
+
+.sign-up-container {
+  width: 550px;
+  background-color: white;
+  margin: auto;
+  padding: 50px 35px;
+
+  .sign-up-title {
+    color: #b2d235;
+    font-size: 30px;
+    font-weight: 700;
+    margin: auto;
+    display: block;
+    text-align: center;
+  }
+
+  .form-label {
+    margin-top: 30px;
+    color: #505353;
+    font-size: 20px;
+  }
+
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #cecece;
+    background: #fafafa;
+    height: 52px;
+  }
+
+  .sign-up-btn {
+    width: 40%;
+    height: 55px;
+    display: block;
+    margin: 40px auto 0;
+    @include common.greenButton;
+    font-family: Arial;
+    font-size: 22px;
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .sign-up-container {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .sign-up-container {
+    width: 350px;
+  }
+}
