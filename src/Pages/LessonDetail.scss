@@ -1,0 +1,242 @@
+@use "common";
+
+.lesson-container {
+  background-color: #f2f2f2;
+  font-family: "UTM BryantLG", sans-serif;
+  padding: 35px;
+}
+
+.lesson-img-container {
+  max-height: 450px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    padding: 50px 0;
+    width: 50%;
+    display: block;
+  }
+}
+
+.lesson-contents {
+  background-color: white;
+  padding: 0 20px;
+  border-radius: 10px;
+  margin-top: 30px;
+
+  .nav-btns {
+    border-bottom: 2px solid #dadada;
+    display: flex;
+    gap: 35px;
+
+    span {
+      display: inline-block;
+      padding: 20px 25px;
+      display: block;
+      color: #505353;
+      font-size: 20px;
+      font-weight: 550;
+      letter-spacing: -0.4px;
+    }
+
+    span:hover {
+      color: #b2d235;
+    }
+
+    .current {
+      color: #b2d235;
+      border-bottom: 2px solid #b2d235;
+    }
+  }
+
+  .lesson-descriptions {
+    padding-bottom: 20px;
+    padding-top: 30px;
+
+    .description-title {
+      color: #505353;
+      font-family: "UTM BryantLG Bold";
+      font-size: 25px;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+      margin-bottom: 15px;
+    }
+
+    .description-txt {
+      color: #949292;
+      text-align: justify;
+      font-size: 18px;
+      line-height: 26px;
+      letter-spacing: -0.36px;
+    }
+  }
+
+  .tags-container {
+    display: flex;
+    column-gap: 13px;
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 15px;
+      row-gap: 15px;
+    }
+    .tag {
+      display: block;
+      border-radius: 3px;
+      border: 1px solid #e4e4e4;
+      background-color: #f2f2f2;
+      padding: 3px 10px;
+      color: #949292;
+    }
+  }
+
+  .program-txt {
+    color: #505353;
+    font-family: "UTM BryantLG Bold";
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    display: block;
+    padding: 30px 0;
+  }
+
+  .document-row {
+    display: flex;
+    padding: 15px 0;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f3f0f0;
+
+    .document-icon {
+      margin-right: 15px;
+    }
+
+    .document-type {
+      color: #bdb9b9;
+      display: inline-block;
+      width: 80px;
+    }
+    .document-title {
+      color: #505353;
+      font-family: "UTM BryantLG Bold";
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.36px;
+      display: inline-block;
+    }
+    .preview-btn {
+      padding: 4px 16px;
+      @include common.greenButton();
+    }
+  }
+}
+
+.lesson-course-info {
+  background-color: white;
+  font-size: 25px;
+  padding: 10px;
+
+  .info-row {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #d1d1d1;
+    position: relative;
+
+    img {
+      position: relative;
+      bottom: 3px;
+      margin-right: 10px;
+    }
+
+    .colon {
+      position: absolute;
+      left: 50%;
+    }
+
+    .info-left {
+      display: block;
+      position: absolute;
+      left: 20px;
+    }
+
+    .info-right {
+      display: block;
+      margin-left: 55%;
+      margin-right: 20px;
+      color: #505353;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      word-break: break-all;
+    }
+  }
+
+  .course-stop-btn {
+    padding: 10px 33px;
+    display: block;
+    margin: 23px auto;
+
+    font-family: "UTM BryantLG Bold";
+    font-size: 18px;
+    letter-spacing: -0.9px;
+    @include common.greenButton();
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .course-contents {
+    .buttons {
+      span {
+        font-size: 20px;
+        padding: 20px 10px;
+      }
+    }
+
+    .course-enroll {
+      margin-top: 20px;
+      justify-content: center;
+    }
+  }
+  .course-info {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .lesson-img-container {
+    height: 450px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .lesson-container {
+    padding: 35px 0;
+  }
+
+  .lesson-course-info {
+    margin-top: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .lesson-container {
+    padding: 35px 0;
+  }
+  .lesson-contents {
+    .nav-btns {
+      gap: 0;
+
+      span {
+        font-size: 18px;
+        padding: 20px 10px;
+      }
+    }
+  }
+
+  .lesson-course-info {
+    font-size: 18px;
+  }
+}
