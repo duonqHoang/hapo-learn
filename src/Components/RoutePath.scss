@@ -8,8 +8,13 @@
   margin: auto;
   padding: 10px 0;
   color: #505353;
-  font-family: UTM BryantLG;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: -0.32px;
+
+  a {
+    text-decoration: none;
+    color: #505353;
+    font-family: UTM BryantLG;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.32px;
+  }
 }

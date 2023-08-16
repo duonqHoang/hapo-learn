@@ -1,40 +1,41 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./Pages/Home";
 import DetailCourse from "./Pages/DetailCourse";
-
 import Profile from "./Pages/Profile";
 import LessonDetail from "./Pages/LessonDetail";
 import AllCourses from "./Pages/AllCourses";
-import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
 import ResetPassword from "./Pages/ResetPassword";
 import SignUp from "./Pages/SignUp";
 import SignIn from "./Pages/SignIn";
+import RootPage from "./Pages/RootPage";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <RootPage />,
       children: [
         { index: true, element: <Home /> },
-        { path: "reset-password", element: <ResetPassword /> },
         { path: "signUp", element: <SignUp /> },
         { path: "signIn", element: <SignIn /> },
         { path: "profile", element: <Profile /> },
+        { path: "resetPassword", element: <ResetPassword /> },
+        { path: "courses", element: <AllCourses /> },
         {
-          path: "course/:id",
+          path: "courses/:courseID",
           element: <DetailCourse />,
         },
-        { path: "course/:id/lesson", element: <LessonDetail /> },
+        {
+          path: "courses/:courseID/:lessonID",
+          element: <LessonDetail />,
+        },
       ],
     },
   ]);
 
   return (
     <>
-      <Navbar />
       <RouterProvider router={router} />
-      <Footer />
     </>
   );
 }

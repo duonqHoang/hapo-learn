@@ -6,6 +6,7 @@ import { FaSearch } from "react-icons/fa";
 import PageControl from "../Components/PageControl";
 
 import "./AllCourses.scss";
+import { useNavigate } from "react-router-dom";
 
 const courses = [
   {
@@ -140,6 +141,7 @@ export default function AllCourses() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [page, setPage] = useState(1);
   const numberOfPages = parseInt(courses.length / 14) + 1;
+  const navigate = useNavigate();
 
   return (
     <div className="all-courses-page">
@@ -171,7 +173,7 @@ export default function AllCourses() {
         </div>
       </Collapse>
       <div className="courses">
-        {courses.map((course,i) => {
+        {courses.map((course, i) => {
           return (
             <div key={i} className="course-card">
               <div className="course-info">
@@ -181,7 +183,9 @@ export default function AllCourses() {
                   <span className="course-intro">{course.intro}</span>
                 </div>
               </div>
-              <button className="more-btn">More</button>
+              <button className="more-btn" onClick={() => navigate(`${i}`)}>
+                More
+              </button>
               <div className="course-statistics">
                 <div className="stat-col">
                   <span className="stat-title">Learners</span>
@@ -206,8 +210,8 @@ export default function AllCourses() {
 }
 
 const dropdownClasses = {
-  control: (state) => "dropdown-box",
-  option: (state) => "dropdown-option",
+  control: () => "dropdown-box",
+  option: () => "dropdown-option",
 };
 
 const dropdownStyles = {
