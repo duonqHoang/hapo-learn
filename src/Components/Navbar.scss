@@ -33,23 +33,19 @@
   position: relative;
   top: 10px;
 
-  li {
+  a {
     font-family: "Open Sans", "Helvetica Neue", sans-serif;
     font-weight: 700;
     font-size: 14;
-    line-height: normal;
     color: #505353;
     text-align: center;
+    text-decoration: none;
   }
-}
 
-.greenPill {
-  flex-shrink: 0;
-  border-radius: 17px;
-  background: #b2d235;
-
-  li {
-    margin: 8px 15px;
+  .active {
+    border-radius: 30px;
+    background: #b2d235;
+    padding: 10px 20px;
     color: #feffff;
   }
 }

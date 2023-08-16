@@ -6,16 +6,16 @@ import {
   Row,
   Form,
 } from "react-bootstrap";
-import Footer from "../Components/Footer";
-import Navbar from "../Components/Navbar";
 import RoutePath from "../Components/RoutePath";
 import "./DetailCourse.scss";
 import { useState } from "react";
 import SearchBox from "../Components/SearchBox";
 import PageControl from "../Components/PageControl";
 import { Rating, Star } from "@smastrom/react-rating";
+import { useNavigate } from "react-router-dom";
 
 const course = {
+  id: 1,
   img: "images/courses/html.png",
   color: "#3F6185",
   description:
@@ -88,6 +88,7 @@ const reviews = [
 
 export default function DetailCourse() {
   const [content, setContent] = useState("lessons");
+  const navigate = useNavigate();
 
   let enrolled = false;
 
@@ -102,8 +103,7 @@ export default function DetailCourse() {
 
   return (
     <>
-      <Navbar />
-      <RoutePath />
+      <RoutePath courseID={course.id} />
       <div className="course-container">
         <Container style={{ width: "82%" }}>
           <Row>
@@ -139,7 +139,9 @@ export default function DetailCourse() {
                     Reviews
                   </span>
                 </div>
-                {content === "lessons" && <Lessons lessons={lessons} />}
+                {content === "lessons" && (
+                  <Lessons lessons={lessons} navigate={navigate} />
+                )}
                 {content === "teachers" && <Teachers teachers={teachers} />}
                 {content === "reviews" && <Reviews reviews={reviews} />}
               </div>
@@ -219,18 +221,19 @@ export default function DetailCourse() {
                     Lorem ipsum dolor sit amet, consectetur the adipiscing elit.
                   </li>
                 </ol>
-                <button>View all our courses</button>
+                <button onClick={() => navigate("/courses")}>
+                  View all our courses
+                </button>
               </div>
             </Col>
           </Row>
         </Container>
       </div>
-      <Footer />
     </>
   );
 }
 
-function Lessons({ lessons }) {
+function Lessons({ lessons, navigate }) {
   return (
     <>
       <Container>
@@ -259,7 +262,13 @@ function Lessons({ lessons }) {
             <li>
               <div className="lesson">
                 <div className="lesson-name">{lessonName}</div>
-                <button>Learn</button>
+                <button
+                  onClick={() => {
+                    navigate(`${i}`);
+                  }}
+                >
+                  Learn
+                </button>
               </div>
             </li>
           );

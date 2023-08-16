@@ -1,13 +1,13 @@
-import Navbar from "../Components/Navbar";
 import "./Home.scss";
 import { Row, Col } from "react-bootstrap";
 import ReviewsCarousel from "../Components/ReviewsCarousel";
-import Footer from "../Components/Footer";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="homePage">
-      <Navbar />
       <div className="banner">
         <div className="banner-content">
           <div className="banner-content--normal">Learn Anytime, Anywhere</div>
@@ -18,7 +18,12 @@ export default function Home() {
           <div className="banner-content--sub">
             Interactive lessons, "on-the-go"{"\n"}practice, peer support.
           </div>
-          <button className="banner-content__button">
+          <button
+            className="banner-content__button"
+            onClick={() => {
+              navigate("/courses");
+            }}
+          >
             Start Learning Now!
           </button>
         </div>
@@ -26,7 +31,7 @@ export default function Home() {
       <div className="banner-back"></div>
       <div className="courses-row">
         <Row style={{ margin: "-80px auto", rowGap: "30px", width: "85%" }}>
-          <CourseCards />
+          <CourseCards navigate={navigate} />
         </Row>
       </div>
 
@@ -35,10 +40,10 @@ export default function Home() {
         <div className="greenBar"></div>
 
         <Row style={{ margin: " auto", rowGap: "30px", width: "85%" }}>
-          <CourseCards />
+          <CourseCards navigate={navigate} />
         </Row>
 
-        <a href="" style={{ textDecoration: "none" }}>
+        <Link to="courses" style={{ textDecoration: "none" }}>
           View All Our Courses{" "}
           <svg
             className="view-all-arrow"
@@ -53,7 +58,7 @@ export default function Home() {
               fill="#90AB26"
             />
           </svg>
-        </a>
+        </Link>
       </section>
       <section className="whyHapo">
         <img className="laptop" src="images/laptop.png" alt="a laptop" />
@@ -86,7 +91,13 @@ export default function Home() {
       </section>
       <section className="membership">
         <h1>Become a member of our{"\n"}growing community!</h1>
-        <button>Start Learning Now!</button>
+        <button
+          onClick={() => {
+            navigate("/courses");
+          }}
+        >
+          Start Learning Now!
+        </button>
       </section>
       <section className="statistic">
         <h1>Statistic</h1>
@@ -113,13 +124,12 @@ export default function Home() {
           </Col>
         </Row>
       </section>
-      <Footer />
     </div>
   );
 }
 
-function CourseCards() {
-  return [1, 2, 3].map(() => {
+function CourseCards({ navigate }) {
+  return [1, 2, 3].map((_, i) => {
     return (
       <Col lg={4} md={12}>
         <div className="courseCard">
@@ -137,7 +147,13 @@ function CourseCards() {
               Media. I had coded quite a bit, but never touched anything in
               regards to web development.
             </div>
-            <button>Take this course</button>
+            <button
+              onClick={() => {
+                navigate(`/courses/${i}`);
+              }}
+            >
+              Take this course
+            </button>
           </div>
         </div>
       </Col>

@@ -2,6 +2,7 @@ import "./LessonDetail.scss";
 import { Container, Row, Col } from "react-bootstrap";
 import RoutePath from "../Components/RoutePath";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const course = {
   name: "HTML/CSS/Js",
@@ -36,6 +37,7 @@ const lesson = {
 
 export default function LessonDetail() {
   const [content, setContent] = useState("descriptions");
+  const navigate = useNavigate();
 
   const changeContent = (newContent, e) => {
     if (newContent !== content) setContent(newContent);
@@ -133,7 +135,14 @@ export default function LessonDetail() {
                     {course.price === 0 ? "Free" : course.price}
                   </div>
                 </div>
-                <button className="course-stop-btn">Kết thúc khóa học</button>
+                <button
+                  className="course-stop-btn"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
+                  Kết thúc khóa học
+                </button>
               </div>
               <div className="course-suggestions">
                 <div className="title">Other Courses</div>
@@ -154,7 +163,9 @@ export default function LessonDetail() {
                     Lorem ipsum dolor sit amet, consectetur the adipiscing elit.
                   </li>
                 </ol>
-                <button>View all our courses</button>
+                <button onClick={() => navigate("/courses")}>
+                  View all our courses
+                </button>
               </div>
             </Col>
           </Row>

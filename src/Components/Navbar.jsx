@@ -3,9 +3,11 @@ import "./Navbar.scss";
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { VscChromeClose } from "react-icons/vsc";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <nav className="navBar">
@@ -14,12 +16,37 @@ export default function Navbar() {
           <img src="/Hapo_Learn.png" alt="Haposoft logo" />
         </div>
         <ul className="navBar__links">
-          <li>HOME</li>
-          <div class="greenPill">
-            <li>ALL COURSES</li>
-          </div>
-          <li>LOGIN/REGISTER</li>
-          <li>PROFILE</li>
+          <li>
+            <Link to="/" className={location.pathname === "/" ? "active" : ""}>
+              HOME
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="courses"
+              className={location.pathname.includes("courses") ? "active" : ""}
+            >
+              ALL COURSES
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="signIn"
+              className={
+                /signIn|signUp/.test(location.pathname) ? "active" : ""
+              }
+            >
+              LOGIN/REGISTER
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="profile"
+              className={location.pathname.includes("profile") ? "active" : ""}
+            >
+              PROFILE
+            </Link>
+          </li>
         </ul>
         <button onClick={() => setOpen(!open)}>
           {open ? (
