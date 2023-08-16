@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/hapo-learn/static/css/main.553c201f.css",
-    "main.js": "/hapo-learn/static/js/main.944cb4a2.js",
+    "main.js": "/hapo-learn/static/js/main.f7bf24bd.js",
     "static/media/background-1.png": "/hapo-learn/static/media/background-1.52cdd308627467921c69.png",
     "static/media/Hapo_Learn_banner_1.png": "/hapo-learn/static/media/Hapo_Learn_banner_1.a839010d7bffa3e1196d.png",
     "static/media/background-2.png": "/hapo-learn/static/media/background-2.1f4e38d2cc6c8cf78083.png",
@@ -14,10 +14,10 @@
     "static/media/calendar.svg": "/hapo-learn/static/media/calendar.a900f825f82558328f43.svg",
     "index.html": "/hapo-learn/index.html",
     "main.553c201f.css.map": "/hapo-learn/static/css/main.553c201f.css.map",
-    "main.944cb4a2.js.map": "/hapo-learn/static/js/main.944cb4a2.js.map"
+    "main.f7bf24bd.js.map": "/hapo-learn/static/js/main.f7bf24bd.js.map"
   },
   "entrypoints": [
     "static/css/main.553c201f.css",
-    "static/js/main.944cb4a2.js"
+    "static/js/main.f7bf24bd.js"
   ]
 }
