@@ -69,7 +69,7 @@ function Review({ review }) {
       </div>
       <div className="review-info">
         <div className="avatar">
-          <img src="/images/catAI.png" alt="User avatar" />
+          <img src="images/catAI.png" alt="User avatar" />
         </div>
         <div>
           <div className="userName">{review.userName}</div>

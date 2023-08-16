@@ -13,7 +13,7 @@ export default function Navbar() {
     <nav className="navBar">
       <div className="horizontal-bar">
         <div className="navBar__logo">
-          <img src="/Hapo_Learn.png" alt="Haposoft logo" />
+          <img src="images/Hapo_Learn.png" alt="Haposoft logo" />
         </div>
         <ul className="navBar__links">
           <li>

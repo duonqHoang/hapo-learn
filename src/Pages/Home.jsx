@@ -13,7 +13,7 @@ export default function Home() {
           <div className="banner-content--normal">Learn Anytime, Anywhere</div>
           <div className="banner-content--bold">
             at HapoLearn{" "}
-            <img className="hapowl" src="/hapowl.png" alt="Hapo Owl" /> !
+            <img className="hapowl" src="images/hapowl.png" alt="Hapo Owl" /> !
           </div>
           <div className="banner-content--sub">
             Interactive lessons, "on-the-go"{"\n"}practice, peer support.
