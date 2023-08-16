@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/duonqHoang.github.io/hapolearn/static/css/main.1bf00e13.css",
+    "main.js": "/duonqHoang.github.io/hapolearn/static/js/main.0dfb5667.js",
+    "static/media/background-1.png": "/duonqHoang.github.io/hapolearn/static/media/background-1.52cdd308627467921c69.png",
+    "static/media/Hapo_Learn_banner_1.png": "/duonqHoang.github.io/hapolearn/static/media/Hapo_Learn_banner_1.a839010d7bffa3e1196d.png",
+    "static/media/background-2.png": "/duonqHoang.github.io/hapolearn/static/media/background-2.1f4e38d2cc6c8cf78083.png",
+    "static/media/UTM_BryantLG.ttf": "/duonqHoang.github.io/hapolearn/static/media/UTM_BryantLG.6ac9618cb914ee77de23.ttf",
+    "static/media/UTMBryantLGBold.ttf": "/duonqHoang.github.io/hapolearn/static/media/UTMBryantLGBold.5c0354e9fdb8c254e5ad.ttf",
+    "static/media/slick.svg": "/duonqHoang.github.io/hapolearn/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/duonqHoang.github.io/hapolearn/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/duonqHoang.github.io/hapolearn/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/duonqHoang.github.io/hapolearn/static/media/slick.295183786cd8a1389865.woff",
+    "static/media/calendar.svg": "/duonqHoang.github.io/hapolearn/static/media/calendar.a900f825f82558328f43.svg",
+    "index.html": "/duonqHoang.github.io/hapolearn/index.html",
+    "main.1bf00e13.css.map": "/duonqHoang.github.io/hapolearn/static/css/main.1bf00e13.css.map",
+    "main.0dfb5667.js.map": "/duonqHoang.github.io/hapolearn/static/js/main.0dfb5667.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1bf00e13.css",
+    "static/js/main.0dfb5667.js"
+  ]
+}
