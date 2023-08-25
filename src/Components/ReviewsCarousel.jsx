@@ -53,7 +53,7 @@ export default function ReviewsCarousel() {
     <div className="carousel">
       <Slider {...settings}>
         {reviews.map((review, i) => {
-          return <Review index={i} review={review} />;
+          return <Review key={i} index={i} review={review} />;
         })}
       </Slider>
     </div>

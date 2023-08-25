@@ -131,7 +131,7 @@ export default function Home() {
 function CourseCards({ navigate }) {
   return [1, 2, 3].map((_, i) => {
     return (
-      <Col lg={4} md={12}>
+      <Col lg={4} md={12} key={i}>
         <div className="courseCard">
           <div className="cardImg-container">
             <img
