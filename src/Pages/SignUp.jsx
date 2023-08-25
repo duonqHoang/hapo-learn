@@ -26,7 +26,7 @@ export default function SignUp() {
           email: form.email.value,
           password: form.password.value,
         });
-        navigate("/", { relative: false });
+        navigate("/signIn", { relative: false });
       } catch (err) {
         setError(err.response.data);
       }
