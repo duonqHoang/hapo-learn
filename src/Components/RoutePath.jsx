@@ -5,8 +5,6 @@ export default function RoutePath() {
   const path = useLocation().pathname;
   const { courseID, lessonID } = useParams();
 
-  console.log(path);
-
   return (
     <div className="route-container">
       <div className="route">
