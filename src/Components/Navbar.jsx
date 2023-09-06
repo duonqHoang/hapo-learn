@@ -1,18 +1,42 @@
 import { Collapse } from "react-bootstrap";
 import "./Navbar.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { VscChromeClose } from "react-icons/vsc";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../Store/user";
+import axios from "../Utils/axios";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [location]);
+
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
+
+  const handleLogout = async () => {
+    const res = await axios.post("logout");
+    if (res.statusText === "OK") {
+      dispatch(userActions.logOut());
+      navigate("/");
+    }
+  };
 
   return (
     <nav className="navBar">
       <div className="horizontal-bar">
-        <div className="navBar__logo">
+        <div
+          className="navBar__logo"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           <img src="/Hapo_Learn.png" alt="Haposoft logo" />
         </div>
         <ul className="navBar__links">
@@ -29,16 +53,23 @@ export default function Navbar() {
               ALL COURSES
             </Link>
           </li>
-          <li>
-            <Link
-              to="signIn"
-              className={
-                /signIn|signUp/.test(location.pathname) ? "active" : ""
-              }
-            >
-              LOGIN/REGISTER
-            </Link>
-          </li>
+          {!isAuth && (
+            <li>
+              <Link
+                to="signIn"
+                className={
+                  /signIn|signUp/.test(location.pathname) ? "active" : ""
+                }
+              >
+                LOGIN/REGISTER
+              </Link>
+            </li>
+          )}
+          {isAuth && (
+            <li className="sign-out-btn" onClick={handleLogout}>
+              SIGN OUT
+            </li>
+          )}
           <li>
             <Link
               to="profile"
@@ -62,25 +93,30 @@ export default function Navbar() {
           <div className="collapsibleNav">
             <ul>
               <li>
-                <a href="#">HOME</a>
+                <Link to="/">HOME</Link>
               </li>
               <li>
-                <a className="greenLink" href="#">
-                  ALL COURSES
-                </a>
+                <Link to="courses">ALL COURSES</Link>
               </li>
               <li>
-                <a href="#">LIST LESSON</a>
+                <Link>LIST LESSON</Link>
               </li>
               <li>
-                <a href="#">LESSON DETAIL</a>
+                <Link>LESSON DETAIL</Link>
               </li>
+              {!isAuth && (
+                <li>
+                  <Link to="signIn">LOGIN/REGISTER</Link>
+                </li>
+              )}
               <li>
-                <a href="#">LOGIN/REGISTER</a>
+                <Link to="profile">PROFILE</Link>
               </li>
-              <li>
-                <a href="#">PROFILE</a>
-              </li>
+              {isAuth && (
+                <li className="sign-out-btn" onClick={handleLogout}>
+                  SIGN OUT
+                </li>
+              )}
             </ul>
           </div>
         </div>

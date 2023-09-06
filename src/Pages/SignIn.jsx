@@ -3,11 +3,15 @@ import "./SignIn.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "../Utils/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../Store/user";
 
 export default function SignIn() {
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState();
   const navigate = useNavigate();
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
+  const dispatch = useDispatch();
 
   const handleLogin = async (event) => {
     const form = event.currentTarget;
@@ -22,9 +26,16 @@ export default function SignIn() {
           username: form.username.value,
           password: form.password.value,
         });
-        navigate("/", { relative: false });
+        if (res.statusText === "OK") {
+          dispatch(userActions.login());
+          navigate("/", { relative: false });
+        }
       } catch (err) {
-        setError(err.response.data);
+        if (err.response) {
+          setError(err.response.data);
+        } else {
+          setError("Server is not running");
+        }
       }
     }
 
@@ -77,7 +88,7 @@ export default function SignIn() {
           <div className="black-line"></div>
         </div>
         <button className="google-btn">
-          <img src="images/google.svg" />
+          <img src="images/google.svg" alt="google icon" />
           <span>Google</span>
         </button>
         <div className="divider-container">
