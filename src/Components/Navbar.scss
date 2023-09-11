@@ -23,6 +23,10 @@
   margin-left: 45px;
 }
 
+.navBar__logo:hover {
+  cursor: pointer;
+}
+
 .navBar__links {
   display: flex;
   flex-direction: row;
@@ -47,6 +51,18 @@
     background: #b2d235;
     padding: 10px 20px;
     color: #feffff;
+  }
+
+  .sign-out-btn {
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    font-weight: 700;
+    font-size: 14;
+    text-align: center;
+    color: red;
+  }
+
+  .sign-out-btn:hover {
+    cursor: pointer;
   }
 }
 
@@ -77,6 +93,16 @@
   }
   .greenLink {
     color: #b2d235;
+  }
+  .sign-out-btn {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: red;
+  }
+  .sign-out-btn:hover {
+    cursor: pointer;
   }
 }
 
