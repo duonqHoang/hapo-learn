@@ -2,7 +2,7 @@ import { redirect } from "react-router-dom";
 import axios from "./axios";
 import { userActions } from "../Store/user";
 
-async function getAuthStatus(dispatch) {
+async function getLoginStatus(dispatch) {
   try {
     await axios.get("/login");
     return dispatch(userActions.login());
@@ -28,4 +28,4 @@ function checkNotAuth(isAuthenticated) {
   return null;
 }
 
-export { checkAuth, checkNotAuth, getAuthStatus };
+export { checkAuth, checkNotAuth, getLoginStatus };

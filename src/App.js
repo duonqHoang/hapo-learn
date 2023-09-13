@@ -8,7 +8,7 @@ import ResetPassword from "./Pages/ResetPassword";
 import SignUp from "./Pages/SignUp";
 import SignIn from "./Pages/SignIn";
 import RootPage from "./Pages/RootPage";
-import { checkAuth, checkNotAuth, getAuthStatus } from "./Utils/auth";
+import { checkAuth, checkNotAuth, getLoginStatus } from "./Utils/auth";
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
     {
       path: "/",
       element: <RootPage />,
-      loader: () => getAuthStatus(dispatch),
+      loader: () => getLoginStatus(dispatch),
       children: [
         { index: true, element: <Home /> },
         {
