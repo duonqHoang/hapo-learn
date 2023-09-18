@@ -1,147 +1,51 @@
 import { Collapse } from "react-bootstrap";
 import { VscSettings } from "react-icons/vsc";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Select from "react-select";
 import { FaSearch } from "react-icons/fa";
 import PageControl from "../Components/PageControl";
-
 import "./AllCourses.scss";
-import { useNavigate } from "react-router-dom";
-
-const courses = [
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-  {
-    name: "HTML Fundamentals",
-    img: "images/courses/course-img/html.png",
-    intro:
-      "Practice during lessons, practice between lessons, practice whenever you can. Master the task, then reinforce and test your knowledge with fun, hands-on exercises and interactive quizzes.",
-    learners: 16882,
-    lessons: 2689,
-    time: 100,
-  },
-];
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getCourses } from "../Store/courses-actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export default function AllCourses() {
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const courses = useSelector((state) => state.courses.courses);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchRef = useRef();
+
   const [page, setPage] = useState(1);
   const numberOfPages = parseInt(courses.length / 14) + 1;
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCourses(searchParams));
+  }, [searchParams]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const search = searchRef.current.value;
+    if (search) {
+      searchParams.set("s", search);
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete("s");
+      setSearchParams(searchParams);
+    }
+  };
+
+  const handleFilter = (type, event) => {
+    setSearchParams((searchParams) => {
+      if (event) {
+        searchParams.set(type, event.value);
+      } else searchParams.delete(type);
+      return searchParams;
+    });
+  };
 
   return (
     <div className="all-courses-page">
@@ -161,50 +65,65 @@ export default function AllCourses() {
           Filter
         </button>
         <div style={{ position: "relative" }}>
-          <input className="search-box" type="text" placeholder="Search..." />
+          <form onSubmit={handleSearch}>
+            <input
+              className="search-box"
+              type="text"
+              placeholder="Search..."
+              ref={searchRef}
+            />
+          </form>
           <FaSearch className="search-icon" />
         </div>
 
-        <button className="search-btn">Tìm kiếm</button>
+        <button className="search-btn" onClick={handleSearch}>
+          Tìm kiếm
+        </button>
       </div>
       <Collapse in={filtersOpen}>
         <div>
-          <Filters />
+          <Filters
+            setSearchParams={setSearchParams}
+            handleFilter={handleFilter}
+          />
         </div>
       </Collapse>
       <div className="courses">
-        {courses.map((course, i) => {
+        {courses.map((course) => {
           return (
-            <div key={i} className="course-card">
+            <div key={course.id} className="course-card">
               <div className="course-info">
-                <img src={course.img} />
+                <img src="images/courses/course-img/html.png" />
                 <div>
                   <span className="course-name">{course.name}</span>
-                  <span className="course-intro">{course.intro}</span>
+                  <span className="course-intro">{course.description}</span>
                 </div>
               </div>
-              <button className="more-btn" onClick={() => navigate(`${i}`)}>
+              <button
+                className="more-btn"
+                onClick={() => navigate(`${course.id}`)}
+              >
                 More
               </button>
               <div className="course-statistics">
                 <div className="stat-col">
                   <span className="stat-title">Learners</span>
-                  <span className="stat-number">{course.learners}</span>
+                  <span className="stat-number">{course.learners.length}</span>
                 </div>
                 <div className="stat-col">
                   <span className="stat-title">Lessons</span>
-                  <span className="stat-number">{course.lessons}</span>
+                  <span className="stat-number">{course.lessons.length}</span>
                 </div>
                 <div className="stat-col">
                   <span className="stat-title">Times</span>
-                  <span className="stat-number">{course.time}</span>
+                  <span className="stat-number">100</span>
                 </div>
               </div>
             </div>
           );
         })}
-        <PageControl />
       </div>
+      <PageControl />
     </div>
   );
 }
@@ -221,14 +140,35 @@ const dropdownStyles = {
   }),
 };
 
-function Filters() {
+function Filters({ setSearchParams, handleFilter }) {
   return (
     <div className="filters">
       <span className="filters-title">Lọc theo</span>
       <div className="filters-btns">
-        <button className="time-sort-btn">Mới nhất</button>
-        <button className="time-sort-btn">Cũ nhất</button>
+        <button
+          className="time-sort-btn"
+          onClick={() =>
+            setSearchParams((searchParams) => {
+              searchParams.set("date", "desc");
+              return searchParams;
+            })
+          }
+        >
+          Mới nhất
+        </button>
+        <button
+          className="time-sort-btn"
+          onClick={() =>
+            setSearchParams((searchParams) => {
+              searchParams.set("date", "asc");
+              return searchParams;
+            })
+          }
+        >
+          Cũ nhất
+        </button>
         <Select
+          isClearable
           unstyled={true}
           styles={dropdownStyles}
           classNames={dropdownClasses}
@@ -240,39 +180,46 @@ function Filters() {
           ]}
         />
         <Select
+          isClearable
           unstyled={true}
           styles={dropdownStyles}
           classNames={dropdownClasses}
           isSearchable={false}
           placeholder="Số người học"
           options={[
-            { value: "ascending", label: "Tăng dần" },
-            { value: "descending", label: "Giảm dần" },
+            { value: "asc", label: "Tăng dần" },
+            { value: "desc", label: "Giảm dần" },
           ]}
+          onChange={(e) => handleFilter("learners", e)}
         />
         <Select
+          isClearable
           unstyled={true}
           styles={dropdownStyles}
           classNames={dropdownClasses}
           isSearchable={false}
           placeholder="Thời gian học"
           options={[
-            { value: "ascending", label: "Tăng dần" },
-            { value: "descending", label: "Giảm dần" },
+            { value: "asc", label: "Tăng dần" },
+            { value: "desc", label: "Giảm dần" },
           ]}
+          onChange={(e) => handleFilter("time", e)}
         />
         <Select
+          isClearable
           unstyled={true}
           styles={dropdownStyles}
           classNames={dropdownClasses}
           isSearchable={false}
           placeholder="Số bài học"
           options={[
-            { value: "ascending", label: "Tăng dần" },
-            { value: "descending", label: "Giảm dần" },
+            { value: "asc", label: "Tăng dần" },
+            { value: "desc", label: "Giảm dần" },
           ]}
+          onChange={(e) => handleFilter("lessons", e)}
         />
         <Select
+          isClearable
           unstyled={true}
           styles={dropdownStyles}
           classNames={dropdownClasses}
@@ -284,6 +231,7 @@ function Filters() {
           ]}
         />
         <Select
+          isClearable
           unstyled={true}
           styles={dropdownStyles}
           classNames={dropdownClasses}

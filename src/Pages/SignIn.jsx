@@ -3,14 +3,13 @@ import "./SignIn.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "../Utils/axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userActions } from "../Store/user";
 
 export default function SignIn() {
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState();
   const navigate = useNavigate();
-  const isAuth = useSelector((state) => state.user.isAuthenticated);
   const dispatch = useDispatch();
 
   const handleLogin = async (event) => {

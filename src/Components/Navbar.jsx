@@ -22,9 +22,10 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     const res = await axios.post("logout");
-    if (res.statusText === "OK") {
-      dispatch(userActions.logOut());
-      navigate("/");
+    dispatch(userActions.logOut());
+    navigate("/");
+    if (res.statusText !== "OK") {
+      console.log("Logout error");
     }
   };
 
