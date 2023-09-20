@@ -4,12 +4,18 @@ import DetailCourse from "./Pages/DetailCourse";
 import Profile from "./Pages/Profile";
 import LessonDetail from "./Pages/LessonDetail";
 import AllCourses from "./Pages/AllCourses";
-import ResetPassword from "./Pages/ResetPassword";
 import SignUp from "./Pages/SignUp";
 import SignIn from "./Pages/SignIn";
 import RootPage from "./Pages/RootPage";
-import { checkAuth, checkNotAuth, getLoginStatus } from "./Utils/auth";
+import {
+  checkAuth,
+  checkNotAuth,
+  checkResetPass,
+  getLoginStatus,
+} from "./Utils/auth";
 import { useDispatch, useSelector } from "react-redux";
+import ForgetPassword from "./Pages/ForgetPassword";
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
   const isAuth = useSelector((state) => state.user.isAuthenticated);
@@ -37,7 +43,7 @@ function App() {
           element: <Profile />,
           loader: () => checkAuth(isAuth, dispatch),
         },
-        { path: "resetPassword", element: <ResetPassword /> },
+        { path: "forget-password", element: <ForgetPassword /> },
         { path: "courses", element: <AllCourses /> },
         {
           path: "courses/:courseID",
@@ -48,6 +54,11 @@ function App() {
           element: <LessonDetail />,
         },
       ],
+    },
+    {
+      path: "/reset-password/:username/:token",
+      element: <ResetPassword />,
+      loader: ({ params }) => checkResetPass(params),
     },
   ]);
 
