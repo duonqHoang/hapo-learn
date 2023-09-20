@@ -4,19 +4,11 @@ import "./Profile.scss";
 import { FaBirthdayCake, FaPhoneAlt, FaHome } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { forwardRef, useState } from "react";
-
-const user = {
-  name: "Võ Hoài Nam",
-  avatar: "images/user-avatar2.jpg",
-  phone: "0123456789",
-  email: "namvh@gmail.com",
-  dob: "10/10/2998",
-  address: "Cầu Giấy, Hà Nội",
-  intro:
-    "Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ippsumipsum, them venenatis",
-  courses: [1, 2, 3, 4, 5],
-};
+import { forwardRef, useEffect, useState } from "react";
+import axios from "../Utils/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfile } from "../Store/user-action";
+import { useNavigate } from "react-router-dom";
 
 const courses = [
   { id: 1, name: "HTML", img: "images/courses/html-small.png" },
@@ -27,7 +19,23 @@ const courses = [
 ];
 
 export default function Profile() {
-  const [dob, setDob] = useState(new Date());
+  const [validated, setValidated] = useState(false);
+  const profile = useSelector((state) => state.user.profile);
+  const [dob, setDob] = useState();
+  const [error, setError] = useState();
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, []);
+
+  useEffect(() => {
+    if (profile.dob) {
+      setDob(new Date(profile.dob));
+    }
+  }, [profile.dob]);
 
   const CustomDobInput = forwardRef(({ value, onClick, onChange }, ref) => (
     <Form.Control
@@ -40,6 +48,33 @@ export default function Profile() {
     ></Form.Control>
   ));
 
+  const submitProfile = async (event) => {
+    setError(null);
+    const form = event.currentTarget;
+
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      event.preventDefault();
+      try {
+        const res = await axios.put("/user", {
+          name: form.name.value,
+          email: form.email.value,
+          dob: dob ? dob.toISOString().split("T")[0] : null,
+          phone: form.phone.value,
+          address: form.address.value,
+          bio: form.bio.value,
+        });
+        navigate(0);
+      } catch (err) {
+        setError(err?.response?.data || err.message);
+      }
+    }
+
+    setValidated(true);
+  };
+
   return (
     <div className="profile-page">
       <Container>
@@ -48,26 +83,26 @@ export default function Profile() {
             <div className="user-info">
               <div className="info-top">
                 <div className="avatar-holder">
-                  <img src={user.avatar} alt="user avatar" />
+                  <img src={"images/user-avatar2.jpg"} alt="user avatar" />
                   <FaCamera className="camera-icon" />
                 </div>
-                <div className="profile-name">{user.name}</div>
-                <div className="profile-email">{user.email}</div>
+                <div className="profile-name">{profile.name}</div>
+                <div className="profile-email">{profile.email}</div>
               </div>
               <div className="info-bottom">
                 <div className="info-row">
                   <FaBirthdayCake className="row-icon birth-icon" />
-                  <span>{user.dob}</span>
+                  <span>{profile.dob}</span>
                 </div>
                 <div className="info-row">
                   <FaPhoneAlt className="row-icon phone-icon" />
-                  <span>{user.phone}</span>
+                  <span>{profile.phone}</span>
                 </div>
                 <div className="info-row">
                   <FaHome className="row-icon address-icon" />
-                  <span>{user.address}</span>
+                  <span>{profile.address}</span>
                 </div>
-                <p className="user-intro">{user.intro}</p>
+                <p className="user-intro">{profile.bio}</p>
               </div>
             </div>
           </Col>
@@ -81,11 +116,9 @@ export default function Profile() {
                 </div>
               </div>
               <div className="enrolled-courses">
-                {user.courses.map((courseID) => {
-                  const course = courses.find((item) => item.id === courseID);
-
+                {courses.map((course, i) => {
                   return (
-                    <div key={courseID} className="enrolled-course">
+                    <div key={i} className="enrolled-course">
                       <div className="courseImg-container">
                         <img src={course.img} />
                       </div>
@@ -118,13 +151,23 @@ export default function Profile() {
                   <div className="green-hr-line" />
                 </div>
               </div>
+              <div
+                className="profile-error"
+                style={{ display: error ? "block" : "none" }}
+              >
+                {error}
+              </div>
               <div className="profile-form">
-                <Form>
+                <Form noValidate validated={validated} onSubmit={submitProfile}>
                   <Row>
                     <Col xl={6}>
                       <Form.Group className="mt-3">
                         <Form.Label className="input-label">Name</Form.Label>
-                        <Form.Control placeholder="Name" />
+                        <Form.Control
+                          name="name"
+                          placeholder="Name"
+                          defaultValue={profile.name}
+                        />
                       </Form.Group>
                       <Form.Group className="mt-3">
                         <Form.Label className="input-label">
@@ -140,29 +183,41 @@ export default function Profile() {
                       </Form.Group>
                       <Form.Group className="mt-3">
                         <Form.Label className="input-label">Address</Form.Label>
-                        <Form.Control placeholder="Address" />
+                        <Form.Control
+                          name="address"
+                          placeholder="Address"
+                          defaultValue={profile.address}
+                        />
                       </Form.Group>
                     </Col>
                     <Col xl={6}>
                       <Form.Group className="mt-3">
                         <Form.Label className="input-label">Email</Form.Label>
                         <Form.Control
+                          name="email"
                           type="email"
                           placeholder="Your email..."
+                          defaultValue={profile.email}
                         />
                       </Form.Group>
                       <Form.Group className="mt-3">
                         <Form.Label className="input-label">Phone</Form.Label>
-                        <Form.Control placeholder="Your phone number..." />
+                        <Form.Control
+                          name="phone"
+                          placeholder="Your phone number..."
+                          defaultValue={profile.phone}
+                        />
                       </Form.Group>
                       <Form.Group className="mt-3">
                         <Form.Label className="input-label">
                           About me
                         </Form.Label>
                         <Form.Control
+                          name="bio"
                           as="textarea"
                           rows={3}
                           placeholder="About you..."
+                          defaultValue={profile.bio}
                         />
                       </Form.Group>
                       <button className="submit-profile-btn" type="submit">
