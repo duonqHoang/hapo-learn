@@ -163,7 +163,7 @@ export default function DetailCourse() {
                   </span>
                 </div>
                 {content === "lessons" && (
-                  <Lessons lessons={lessons} navigate={navigate} />
+                  <Lessons courseID={params.courseID} navigate={navigate} />
                 )}
                 {content === "teachers" && (
                   <Teachers teacher={course.teacher} />
@@ -260,7 +260,25 @@ export default function DetailCourse() {
   );
 }
 
-function Lessons({ lessons, navigate }) {
+function Lessons({ courseID, navigate }) {
+  const [lessonData, setLessonData] = useState({
+    lessons: [],
+    lessonsCount: 0,
+  });
+
+  const fetchLessonData = async () => {
+    try {
+      const res = await axios.get("/lessons/" + courseID);
+      setLessonData(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchLessonData();
+  }, []);
+
   return (
     <>
       <Container>
@@ -284,14 +302,14 @@ function Lessons({ lessons, navigate }) {
         </Row>
       </Container>
       <ol>
-        {lessons.map((lessonName, i) => {
+        {lessonData.lessons.map((lesson) => {
           return (
-            <li>
+            <li key={lesson.id}>
               <div className="lesson">
-                <div className="lesson-name">{lessonName}</div>
+                <div className="lesson-name">{lesson.name}</div>
                 <button
                   onClick={() => {
-                    navigate(`${i}`);
+                    navigate(`${lesson.id}`);
                   }}
                 >
                   Learn
@@ -425,6 +443,7 @@ function Reviews({ courseID }) {
   const [reviewData, setReviewData] = useState({
     reviews: [],
     reviewsCount: 0,
+    //Position: 5,4,3,2,1 star
     reviewCounter: [0, 0, 0, 0, 0],
     averageRating: 0,
   });
@@ -433,7 +452,6 @@ function Reviews({ courseID }) {
     try {
       const res = await axios.get("/reviews/" + courseID);
       setReviewData(res.data);
-      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
