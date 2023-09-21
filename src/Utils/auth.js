@@ -28,4 +28,14 @@ function checkNotAuth(isAuthenticated) {
   return null;
 }
 
-export { checkAuth, checkNotAuth, getLoginStatus };
+async function checkResetPass({ username, token }) {
+  try {
+    const data = await axios.get(`/reset-password/${username}/${token}`);
+    return data;
+  } catch (err) {
+    console.log(err);
+    return redirect("/");
+  }
+}
+
+export { checkAuth, checkNotAuth, getLoginStatus, checkResetPass };

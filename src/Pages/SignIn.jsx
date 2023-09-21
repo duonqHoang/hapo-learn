@@ -77,7 +77,7 @@ export default function SignIn() {
               }}
             />
           </Form.Group>
-          <Link to="/resetPassword">Forgot password</Link>
+          <Link to="/forget-password">Forgot password</Link>
           <button className="sign-in-btn" type="submit">
             Sign in
           </button>
