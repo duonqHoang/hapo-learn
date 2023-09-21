@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialCoursesState = {
-  totalCoursesNumber: null,
+  totalCoursesNumber: 0,
   courses: [],
-  page: 1,
 };
 
 const coursesSlice = createSlice({
@@ -11,7 +10,8 @@ const coursesSlice = createSlice({
   initialState: initialCoursesState,
   reducers: {
     updateCourses(state, action) {
-      state.courses = action.payload;
+      state.courses = action.payload[0];
+      state.totalCoursesNumber = action.payload[1];
     },
   },
 });
