@@ -22,13 +22,13 @@ export default function SignUp() {
       event.preventDefault();
       try {
         const res = await axios.post("/register", {
-          name: form.name.value,
+          username: form.name.value,
           email: form.email.value,
           password: form.password.value,
         });
         navigate("/signIn", { relative: false });
       } catch (err) {
-        setError(err.response.data);
+        setError(err.response.data.join(", "));
       }
     }
 

@@ -31,7 +31,7 @@ export default function SignIn() {
         }
       } catch (err) {
         if (err.response) {
-          setError(err.response.data);
+          setError(err.response.data.join(", "));
         } else {
           setError("Server is not running");
         }
