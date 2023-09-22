@@ -108,11 +108,11 @@ export default function AllCourses() {
               <div className="course-statistics">
                 <div className="stat-col">
                   <span className="stat-title">Learners</span>
-                  <span className="stat-number">{course.learners.length}</span>
+                  <span className="stat-number">{course.learnersCount}</span>
                 </div>
                 <div className="stat-col">
                   <span className="stat-title">Lessons</span>
-                  <span className="stat-number">{course.lessons.length}</span>
+                  <span className="stat-number">{course.lessonsCount}</span>
                 </div>
                 <div className="stat-col">
                   <span className="stat-title">Times</span>
