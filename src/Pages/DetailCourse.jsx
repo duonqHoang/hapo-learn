@@ -18,11 +18,14 @@ import axios from "../Utils/axios";
 export default function DetailCourse() {
   const [content, setContent] = useState("lessons");
   const [course, setCourse] = useState({});
+  const [userCourses, setUserCourses] = useState([]);
   const navigate = useNavigate();
 
   const params = useParams();
 
-  let enrolled = false;
+  const enrolled = userCourses.find((course) => course.id == params.courseID)
+    ? true
+    : false;
 
   const fetchCourseData = async () => {
     try {
@@ -33,13 +36,32 @@ export default function DetailCourse() {
     }
   };
 
+  const fetchUserCourses = async () => {
+    try {
+      const res = await axios.get("/user/courses");
+      setUserCourses(res.data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   useEffect(() => {
     try {
       fetchCourseData();
+      fetchUserCourses();
     } catch (err) {
       console.log(err);
     }
   }, []);
+
+  const handleUnenrollCourse = async () => {
+    try {
+      await axios.post(`/courses/${params.courseID}/unenroll`);
+      fetchUserCourses();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const changeContent = (newContent, e) => {
     if (newContent !== content) setContent(newContent);
@@ -89,7 +111,12 @@ export default function DetailCourse() {
                   </span>
                 </div>
                 {content === "lessons" && (
-                  <Lessons courseID={params.courseID} navigate={navigate} />
+                  <Lessons
+                    courseID={params.courseID}
+                    navigate={navigate}
+                    enrolled={enrolled}
+                    fetchUserCourses={fetchUserCourses}
+                  />
                 )}
                 {content === "teachers" && (
                   <Teachers teacher={course.teacher} />
@@ -152,7 +179,13 @@ export default function DetailCourse() {
                     {course.price === 0 ? "Free" : course.price}
                   </div>
                 </div>
-                {enrolled && <button>Kết thúc khóa học</button>}
+                {enrolled && (
+                  <div className="course-unenroll">
+                    <button onClick={handleUnenrollCourse}>
+                      Kết thúc khóa học
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="course-suggestions">
@@ -186,15 +219,24 @@ export default function DetailCourse() {
   );
 }
 
-function Lessons({ courseID, navigate }) {
+function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
   const [lessonData, setLessonData] = useState({
     lessons: [],
     lessonsCount: 0,
   });
 
+  const handleEnrollCourse = async () => {
+    try {
+      await axios.post(`/courses/${courseID}/enroll`);
+      fetchUserCourses();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const fetchLessonData = async () => {
     try {
-      const res = await axios.get("/lessons/" + courseID);
+      const res = await axios.get("/lessons?courseID=" + courseID);
       setLessonData(res.data);
     } catch (err) {
       console.log(err);
@@ -221,9 +263,11 @@ function Lessons({ courseID, navigate }) {
             </div>
           </Col>
           <Col xl={5} lg={12} md={12} sm={12}>
-            <div className="course-enroll">
-              <button>Tham gia khóa học</button>
-            </div>
+            {!enrolled && (
+              <div className="course-enroll">
+                <button onClick={handleEnrollCourse}>Tham gia khóa học</button>
+              </div>
+            )}
           </Col>
         </Row>
       </Container>

@@ -401,6 +401,18 @@
       margin-right: 20px;
     }
   }
+  .course-unenroll {
+    padding: 20px 0;
+
+    button {
+      margin: auto;
+      display: block;
+      font-family: "UTM BryantLG Bold";
+      padding: 10px 30px;
+      font-size: 18px;
+      @include common.greenButton();
+    }
+  }
 }
 
 .course-suggestions {

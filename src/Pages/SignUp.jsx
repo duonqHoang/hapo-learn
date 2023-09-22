@@ -28,7 +28,7 @@ export default function SignUp() {
         });
         navigate("/signIn", { relative: false });
       } catch (err) {
-        setError(err.response.data.join(", "));
+        setError(err.response.data);
       }
     }
 
