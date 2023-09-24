@@ -14,11 +14,13 @@ import PageControl from "../Components/PageControl";
 import { Rating, Star } from "@smastrom/react-rating";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../Utils/axios";
+import { useSelector } from "react-redux";
 
 export default function DetailCourse() {
   const [content, setContent] = useState("lessons");
   const [course, setCourse] = useState({});
   const [userCourses, setUserCourses] = useState([]);
+  const isLoggedIn = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
 
   const params = useParams();
@@ -48,7 +50,7 @@ export default function DetailCourse() {
   useEffect(() => {
     try {
       fetchCourseData();
-      fetchUserCourses();
+      if (isLoggedIn) fetchUserCourses();
     } catch (err) {
       console.log(err);
     }
@@ -150,7 +152,7 @@ export default function DetailCourse() {
                     <span>Time</span>
                   </div>
                   <div className="colon">:</div>
-                  <div className="info-right">80 hours</div>
+                  <div className="info-right">{course.time} hours</div>
                 </div>
                 <div className="info-col">
                   <div className="info-left">
@@ -176,7 +178,7 @@ export default function DetailCourse() {
                   </div>
                   <div className="colon">:</div>
                   <div className="info-right">
-                    {course.price === 0 ? "Free" : course.price}
+                    {course.price ? course.price : "Free"}
                   </div>
                 </div>
                 {enrolled && (

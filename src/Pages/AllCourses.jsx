@@ -116,7 +116,7 @@ export default function AllCourses() {
                 </div>
                 <div className="stat-col">
                   <span className="stat-title">Times</span>
-                  <span className="stat-number">100</span>
+                  <span className="stat-number">{course.time}</span>
                 </div>
               </div>
             </div>
@@ -238,9 +238,10 @@ function Filters({ setSearchParams, handleFilter }) {
           isSearchable={false}
           placeholder="Review"
           options={[
-            { value: "test", label: "test" },
-            { value: "test", label: "test" },
+            { value: "asc", label: "Tăng dần" },
+            { value: "desc", label: "Giảm dần" },
           ]}
+          onChange={(e) => handleFilter("review", e)}
         />
       </div>
     </div>
