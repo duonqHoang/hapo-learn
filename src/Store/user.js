@@ -9,6 +9,7 @@ const initialUserState = {
     phone: "",
     address: "",
     bio: "",
+    courses: [],
   },
 };
 
@@ -19,7 +20,7 @@ const userSlice = createSlice({
     login(state) {
       state.isAuthenticated = true;
     },
-    logOut(state) {
+    logOut() {
       return initialUserState;
     },
     updateProfile(state, action) {

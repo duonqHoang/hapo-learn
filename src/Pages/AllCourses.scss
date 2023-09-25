@@ -181,8 +181,11 @@
   }
 }
 
-.page-control {
-  margin-left: auto;
+.pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 5px;
 }
 
 @media screen and (max-width: 1199px) {

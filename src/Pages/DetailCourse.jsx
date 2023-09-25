@@ -8,13 +8,13 @@ import {
 } from "react-bootstrap";
 import RoutePath from "../Components/RoutePath";
 import "./DetailCourse.scss";
-import { useEffect, useState } from "react";
-import SearchBox from "../Components/SearchBox";
-import PageControl from "../Components/PageControl";
+import { useEffect, useRef, useState } from "react";
+import Pagination from "../Components/Pagination";
 import { Rating, Star } from "@smastrom/react-rating";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../Utils/axios";
 import { useSelector } from "react-redux";
+import { FaSearch } from "react-icons/fa";
 
 export default function DetailCourse() {
   const [content, setContent] = useState("lessons");
@@ -124,7 +124,7 @@ export default function DetailCourse() {
                   <Teachers teacher={course.teacher} />
                 )}
                 {content === "reviews" && (
-                  <Reviews courseID={params.courseID} />
+                  <Reviews courseID={params.courseID} navigate={navigate} />
                 )}
               </div>
             </Col>
@@ -227,6 +227,11 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
     lessonsCount: 0,
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const searchInput = useRef();
+  const numberOfPages = parseInt(lessonData.lessonsCount / 20) + 1 || 1;
+
   const handleEnrollCourse = async () => {
     try {
       await axios.post(`/courses/${courseID}/enroll`);
@@ -236,9 +241,21 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
     }
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const input = searchInput.current.value;
+    setSearch(input);
+  };
+
   const fetchLessonData = async () => {
     try {
-      const res = await axios.get("/lessons?courseID=" + courseID);
+      const res = await axios.get(
+        `/lessons?courseID=${courseID}&page=${currentPage}&s=${search}`
+      );
       setLessonData(res.data);
     } catch (err) {
       console.log(err);
@@ -247,7 +264,7 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
 
   useEffect(() => {
     fetchLessonData();
-  }, []);
+  }, [currentPage, search]);
 
   return (
     <>
@@ -260,8 +277,16 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
         >
           <Col xl={7} lg={12} md={12} sm={12}>
             <div className="search">
-              <SearchBox />
-              <button>Tìm kiếm</button>
+              <form className="search-container" onSubmit={handleSearch}>
+                <input
+                  className="search-box"
+                  type="text"
+                  placeholder="Search..."
+                  ref={searchInput}
+                />
+                <FaSearch className="search-icon" />
+              </form>
+              <button onClick={handleSearch}>Tìm kiếm</button>
             </div>
           </Col>
           <Col xl={5} lg={12} md={12} sm={12}>
@@ -291,7 +316,32 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
           );
         })}
       </ol>
-      <PageControl />
+      <div className="pagination">
+        <Pagination.Prev
+          className={currentPage === 1 ? "active" : ""}
+          onClick={() =>
+            currentPage > 1 ? handlePageChange(currentPage - 1) : null
+          }
+        />
+        {[...Array(numberOfPages)].map((_, index) => {
+          return (
+            <Pagination.Item
+              className={index + 1 === currentPage ? "active" : ""}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          );
+        })}
+        <Pagination.Next
+          className={currentPage === numberOfPages ? "active" : ""}
+          onClick={
+            currentPage < numberOfPages
+              ? handlePageChange(currentPage + 1)
+              : null
+          }
+        />
+      </div>
     </>
   );
 }
@@ -411,7 +461,7 @@ const starStyles = {
   inactiveFillColor: "#D8D8D8",
 };
 
-function Reviews({ courseID }) {
+function Reviews({ courseID, navigate }) {
   const [reviewData, setReviewData] = useState({
     reviews: [],
     reviewsCount: 0,
@@ -419,6 +469,7 @@ function Reviews({ courseID }) {
     reviewCounter: [0, 0, 0, 0, 0],
     averageRating: 0,
   });
+  const [formStar, setFormStar] = useState(5);
 
   const fetchReviewData = async () => {
     try {
@@ -432,6 +483,20 @@ function Reviews({ courseID }) {
   useEffect(() => {
     fetchReviewData();
   }, []);
+
+  const handleSubmitReview = async (event) => {
+    try {
+      const form = event.currentTarget;
+      event.preventDefault();
+      await axios.post("/reviews/" + courseID, {
+        star: formStar,
+        comment: form.comment.value,
+      });
+      navigate(0);
+    } catch (err) {
+      console.log(err?.response?.data || err.message);
+    }
+  };
 
   return (
     <>
@@ -530,10 +595,10 @@ function Reviews({ courseID }) {
       })}
       <div className="review-form">
         <h2>Leave a Review</h2>
-        <Form>
+        <Form onSubmit={handleSubmitReview}>
           <Form.Group className="mb-3 mt-2">
             <Form.Label className="txtarea-title">Message</Form.Label>
-            <Form.Control as="textarea" rows={3} />
+            <Form.Control name="comment" as="textarea" rows={3} />
           </Form.Group>
           <Form.Group className="d-flex align-items-center gap-3">
             <Form.Label as="h2">Vote</Form.Label>
@@ -543,6 +608,8 @@ function Reviews({ courseID }) {
                 style={{ maxWidth: 85 }}
                 spaceBetween="small"
                 spaceInside="none"
+                value={formStar}
+                onChange={(star) => setFormStar(star)}
               />
             </div>
 
