@@ -4,19 +4,11 @@ import "./Profile.scss";
 import { FaBirthdayCake, FaPhoneAlt, FaHome } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import axios from "../Utils/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../Store/user-action";
 import { useNavigate } from "react-router-dom";
-
-const courses = [
-  { id: 1, name: "HTML", img: "images/courses/html-small.png" },
-  { id: 2, name: "CSS", img: "images/courses/css-small.png" },
-  { id: 3, name: "Swift", img: "images/courses/swift-small.png" },
-  { id: 4, name: "C#", img: "images/courses/csharp-small.png" },
-  { id: 5, name: "Angular", img: "images/courses/angular-small.png" },
-];
 
 export default function Profile() {
   const [validated, setValidated] = useState(false);
@@ -24,12 +16,13 @@ export default function Profile() {
   const [dob, setDob] = useState();
   const [error, setError] = useState();
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
+  const avtInput = useRef();
 
   useEffect(() => {
     dispatch(getProfile());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (profile.dob) {
@@ -58,7 +51,7 @@ export default function Profile() {
     } else {
       event.preventDefault();
       try {
-        const res = await axios.put("/user", {
+        await axios.put("/user", {
           name: form.name.value,
           email: form.email.value,
           dob: dob ? dob.toISOString().split("T")[0] : null,
@@ -75,6 +68,19 @@ export default function Profile() {
     setValidated(true);
   };
 
+  const handleChangeAvatar = async () => {
+    try {
+      await axios.put(
+        "/user/avatar",
+        { avatar: avtInput.current.files[0] },
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      navigate(0);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="profile-page">
       <Container>
@@ -83,9 +89,25 @@ export default function Profile() {
             <div className="user-info">
               <div className="info-top">
                 <div className="avatar-holder">
-                  <img src={"images/user-avatar2.jpg"} alt="user avatar" />
-                  <FaCamera className="camera-icon" />
+                  <img
+                    src={`http://localhost:8080/images/${profile.avatar}`}
+                    alt="user avatar"
+                  />
+                  <FaCamera
+                    className="camera-icon"
+                    onClick={() => avtInput.current.click()}
+                  />
                 </div>
+
+                <input
+                  style={{ display: "none" }}
+                  ref={avtInput}
+                  name="file"
+                  type="file"
+                  onChange={handleChangeAvatar}
+                  accept="image/png, image/jpeg"
+                />
+
                 <div className="profile-name">{profile.name}</div>
                 <div className="profile-email">{profile.email}</div>
               </div>
@@ -116,18 +138,26 @@ export default function Profile() {
                 </div>
               </div>
               <div className="enrolled-courses">
-                {courses.map((course, i) => {
+                {profile.courses.map((course) => {
                   return (
-                    <div key={i} className="enrolled-course">
-                      <div className="courseImg-container">
-                        <img src={course.img} />
+                    <div key={course.id} className="enrolled-course">
+                      <div
+                        className="courseImg-container"
+                        onClick={() => navigate(`/courses/${course.id}`)}
+                      >
+                        <img
+                          src={course.img || "images/courses/html-small.png"}
+                        />
                       </div>
                       <span>{course.name}</span>
                     </div>
                   );
                 })}
                 <div className="add-course">
-                  <button className="add-course-btn">
+                  <button
+                    className="add-course-btn"
+                    onClick={() => navigate("/courses")}
+                  >
                     <svg
                       width="16"
                       height="16"

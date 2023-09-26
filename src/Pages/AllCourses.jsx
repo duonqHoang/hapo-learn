@@ -3,24 +3,26 @@ import { VscSettings } from "react-icons/vsc";
 import { useRef, useState } from "react";
 import Select from "react-select";
 import { FaSearch } from "react-icons/fa";
-import PageControl from "../Components/PageControl";
+import Pagination from "../Components/Pagination";
 import "./AllCourses.scss";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getCourses } from "../Store/courses-actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import axios from "../Utils/axios";
 
 export default function AllCourses() {
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const courses = useSelector((state) => state.courses.courses);
+  const coursesData = useSelector((state) => state.courses);
   const [searchParams, setSearchParams] = useSearchParams();
+
   const searchRef = useRef();
-
-  const [page, setPage] = useState(1);
-  const numberOfPages = parseInt(courses.length / 14) + 1;
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const currentPage = +searchParams.get("page") || 1;
+  const courses = coursesData.courses;
+  const coursesCount = coursesData.totalCoursesNumber;
+  const numberOfPages = parseInt(coursesCount / 14) + 1 || 1;
 
   useEffect(() => {
     dispatch(getCourses(searchParams));
@@ -45,6 +47,11 @@ export default function AllCourses() {
       } else searchParams.delete(type);
       return searchParams;
     });
+  };
+
+  const handlePageChange = (pageNumber) => {
+    searchParams.set("page", pageNumber);
+    setSearchParams(searchParams);
   };
 
   return (
@@ -123,7 +130,36 @@ export default function AllCourses() {
           );
         })}
       </div>
-      <PageControl />
+      <div className="pagination">
+        <Pagination.Prev
+          className={currentPage === 1 ? "active" : ""}
+          onClick={() =>
+            currentPage > 1 ? handlePageChange(currentPage - 1) : null
+          }
+        />
+        {[...Array(numberOfPages)].map((_, index) => {
+          return (
+            <Pagination.Item
+              className={index + 1 === currentPage ? "active" : ""}
+              onClick={() => {
+                return currentPage !== index + 1
+                  ? handlePageChange(index + 1)
+                  : null;
+              }}
+            >
+              {index + 1}
+            </Pagination.Item>
+          );
+        })}
+        <Pagination.Next
+          className={currentPage === numberOfPages ? "active" : ""}
+          onClick={
+            currentPage < numberOfPages
+              ? handlePageChange(currentPage + 1)
+              : null
+          }
+        />
+      </div>
     </div>
   );
 }
@@ -141,6 +177,21 @@ const dropdownStyles = {
 };
 
 function Filters({ setSearchParams, handleFilter }) {
+  const [teachers, setTeachers] = useState([]);
+
+  const fetchTeacherList = async () => {
+    try {
+      const res = await axios.get("/teachers");
+      setTeachers(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeacherList();
+  }, []);
+
   return (
     <div className="filters">
       <span className="filters-title">Lọc theo</span>
@@ -174,10 +225,10 @@ function Filters({ setSearchParams, handleFilter }) {
           classNames={dropdownClasses}
           isSearchable={false}
           placeholder="Teacher"
-          options={[
-            { value: "test", label: "test" },
-            { value: "test", label: "test" },
-          ]}
+          options={teachers.map((teacher) => {
+            return { value: teacher.id, label: teacher.name };
+          })}
+          onChange={(e) => handleFilter("teacher", e)}
         />
         <Select
           isClearable

@@ -2,9 +2,36 @@ import "./Home.scss";
 import { Row, Col } from "react-bootstrap";
 import ReviewsCarousel from "../Components/ReviewsCarousel";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "../Utils/axios";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [bestCourses, setBestCourses] = useState([]);
+  const [bestReviews, setBestReviews] = useState([]);
+
+  const fetchBestCourses = async () => {
+    try {
+      const res = await axios.get("/best-courses");
+      setBestCourses(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchBestReviews = async () => {
+    try {
+      const res = await axios.get("/reviews");
+      setBestReviews(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchBestCourses();
+    fetchBestReviews();
+  }, []);
 
   return (
     <div className="homePage">
@@ -31,7 +58,7 @@ export default function Home() {
       <div className="banner-back"></div>
       <div className="courses-row">
         <Row style={{ margin: "-80px auto", rowGap: "30px", width: "85%" }}>
-          <CourseCards navigate={navigate} />
+          <CourseCards courses={bestCourses.slice(0, 3)} navigate={navigate} />
         </Row>
       </div>
 
@@ -40,7 +67,7 @@ export default function Home() {
         <div className="greenBar"></div>
 
         <Row style={{ margin: " auto", rowGap: "30px", width: "85%" }}>
-          <CourseCards navigate={navigate} />
+          <CourseCards courses={bestCourses.slice(-3)} navigate={navigate} />
         </Row>
 
         <Link to="courses" style={{ textDecoration: "none" }}>
@@ -87,7 +114,7 @@ export default function Home() {
           What other students turned professionals have to say about us{"\n"}{" "}
           after learning with us and reaching their goals
         </p>
-        <ReviewsCarousel />
+        <ReviewsCarousel reviews={bestReviews} />
       </section>
       <section className="membership">
         <h1>Become a member of our{"\n"}growing community!</h1>
@@ -128,10 +155,10 @@ export default function Home() {
   );
 }
 
-function CourseCards({ navigate }) {
-  return [1, 2, 3].map((_, i) => {
+function CourseCards({ courses, navigate }) {
+  return courses.map((course) => {
     return (
-      <Col lg={4} md={12} key={i}>
+      <Col lg={4} md={12} key={course.id}>
         <div className="courseCard">
           <div className="cardImg-container">
             <img
@@ -141,15 +168,11 @@ function CourseCards({ navigate }) {
             />
           </div>
           <div className="card-content">
-            <div className="card-title">HTML/CSS/js Tutorial</div>
-            <div className="card-description">
-              I knew hardly anything about HTML, JS, and CSS before entering New
-              Media. I had coded quite a bit, but never touched anything in
-              regards to web development.
-            </div>
+            <div className="card-title">{course.name}</div>
+            <div className="card-description">{course.description}</div>
             <button
               onClick={() => {
-                navigate(`/courses/${i}`);
+                navigate(`/courses/${course.id}`);
               }}
             >
               Take this course

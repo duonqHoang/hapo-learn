@@ -21,7 +21,7 @@ export default function SignUp() {
     } else {
       event.preventDefault();
       try {
-        const res = await axios.post("/register", {
+        await axios.post("/register", {
           username: form.name.value,
           email: form.email.value,
           password: form.password.value,
