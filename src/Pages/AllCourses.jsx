@@ -141,7 +141,11 @@ export default function AllCourses() {
           return (
             <Pagination.Item
               className={index + 1 === currentPage ? "active" : ""}
-              onClick={() => handlePageChange(index + 1)}
+              onClick={() => {
+                return currentPage !== index + 1
+                  ? handlePageChange(index + 1)
+                  : null;
+              }}
             >
               {index + 1}
             </Pagination.Item>
