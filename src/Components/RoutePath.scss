@@ -1,0 +1,20 @@
+.route-container {
+  width: 100%;
+  background-color: #e9e7e7;
+}
+
+.route {
+  width: 80%;
+  margin: auto;
+  padding: 10px 0;
+  color: #505353;
+
+  a {
+    text-decoration: none;
+    color: #505353;
+    font-family: UTM BryantLG;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.32px;
+  }
+}

@@ -1,0 +1,229 @@
+@use "common";
+
+.all-courses-page {
+  background-color: #f2f2f2;
+  padding: 0 135px 110px;
+}
+
+.top-bar {
+  padding-top: 40px;
+  font-family: "Open Sans";
+  display: flex;
+  gap: 10px;
+
+  .filter-toggle {
+    border-radius: 5px;
+    border: 1px solid #c4c4c4;
+    background: #fff;
+    padding: 10px 15px;
+    color: #505353;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .search-box {
+    padding: 10px 50px 10px 10px;
+    height: 100%;
+    border-radius: 5px;
+    border: 1px solid #c4c4c4;
+    background: #fff;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 20px;
+    top: 33%;
+    width: 20px;
+    height: auto;
+    color: #505353;
+  }
+
+  .search-btn {
+    @include common.greenButton();
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
+  .search-btn:hover {
+    opacity: 80%;
+  }
+}
+
+.filters {
+  background-color: white;
+  display: flex;
+  column-gap: 20px;
+  margin-top: 20px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  border: 1px solid #c4c4c4;
+  font-family: "Open Sans";
+
+  .filters-title {
+    color: #505353;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+    position: relative;
+    top: 5px;
+  }
+
+  .filters-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 10px;
+  }
+
+  .time-sort-btn {
+    padding: 8px 25px;
+    border: none;
+  }
+
+  .dropdown-box {
+    width: 180px;
+    border: 1px solid #e5e6e7;
+    border-radius: 2px 2px 0 0;
+    padding: 8px;
+  }
+
+  .dropdown-option {
+    background-color: white;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-left: 10px;
+  }
+
+  .dropdown-option:hover {
+    background-color: #b2d235;
+    color: white;
+  }
+}
+
+.courses {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 40px;
+  margin-top: 40px;
+  font-family: "UTM BryantLG";
+}
+
+.course-card {
+  width: 49%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #f1f1f1;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.25);
+
+  .course-info {
+    display: flex;
+    column-gap: 32px;
+
+    img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+    }
+    .course-name {
+      color: #505353;
+      font-family: "UTM BryantLG Bold";
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: -1.25px;
+      display: block;
+    }
+    .course-intro {
+      color: #505050;
+      display: block;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 25px;
+      letter-spacing: -0.9px;
+    }
+  }
+
+  .more-btn {
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    padding: 10px 30px;
+    @include common.greenButton();
+  }
+
+  .course-statistics {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #f1f1f1;
+    padding-top: 7px;
+    margin-top: 27px;
+
+    .stat-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-title {
+      color: #505353;
+      font-family: "UTM BryantLG Bold";
+      font-size: 25px;
+      letter-spacing: -1.25px;
+    }
+
+    .stat-number {
+      color: #b2d235;
+      font-family: "UTM BryantLG Bold";
+      font-size: 30px;
+      letter-spacing: -1.5px;
+    }
+  }
+}
+
+.pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 5px;
+}
+
+@media screen and (max-width: 1199px) {
+  .all-courses-page {
+    padding: 0 100px 110px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .all-courses-page {
+    padding: 0 40px 110px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .all-courses-page {
+    padding: 0 30px 110px;
+  }
+
+  .course-card {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .top-bar {
+    .search-box {
+      padding-right: 10px;
+    }
+
+    .search-icon {
+      display: none;
+    }
+  }
+
+  .filters {
+    .dropdown-box {
+      width: 115px;
+    }
+  }
+}
