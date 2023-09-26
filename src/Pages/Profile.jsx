@@ -92,6 +92,9 @@ export default function Profile() {
                   <img
                     src={`http://localhost:8080/images/${profile.avatar}`}
                     alt="user avatar"
+                    onError={(event) => {
+                      event.currentTarget.src = "images/user-avatar.jpg";
+                    }}
                   />
                   <FaCamera
                     className="camera-icon"
