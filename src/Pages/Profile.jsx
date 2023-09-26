@@ -59,7 +59,7 @@ export default function Profile() {
           address: form.address.value,
           bio: form.bio.value,
         });
-        navigate(0);
+        dispatch(getProfile());
       } catch (err) {
         setError(err?.response?.data || err.message);
       }
@@ -75,7 +75,7 @@ export default function Profile() {
         { avatar: avtInput.current.files[0] },
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      navigate(0);
+      dispatch(getProfile());
     } catch (err) {
       console.log(err);
     }
@@ -149,7 +149,11 @@ export default function Profile() {
                         onClick={() => navigate(`/courses/${course.id}`)}
                       >
                         <img
-                          src={course.img || "images/courses/html-small.png"}
+                          src={`http://localhost:8080/images/${course.image}`}
+                          alt="course logo"
+                          onError={(event) => {
+                            event.currentTarget.src = "hapowl.png";
+                          }}
                         />
                       </div>
                       <span>{course.name}</span>

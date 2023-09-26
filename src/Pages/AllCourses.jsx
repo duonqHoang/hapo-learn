@@ -13,16 +13,14 @@ import axios from "../Utils/axios";
 
 export default function AllCourses() {
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const coursesData = useSelector((state) => state.courses);
+  const { courses, totalCoursesNumber } = useSelector((state) => state.courses);
   const [searchParams, setSearchParams] = useSearchParams();
-
   const searchRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentPage = +searchParams.get("page") || 1;
-  const courses = coursesData.courses;
-  const coursesCount = coursesData.totalCoursesNumber;
-  const numberOfPages = parseInt(coursesCount / 14) + 1 || 1;
+
+  const currentPage = parseInt(searchParams.get("page") || 1);
+  const numberOfPages = parseInt(totalCoursesNumber / 14) + 1 || 1;
 
   useEffect(() => {
     dispatch(getCourses(searchParams));
@@ -100,7 +98,15 @@ export default function AllCourses() {
           return (
             <div key={course.id} className="course-card">
               <div className="course-info">
-                <img src="images/courses/course-img/html.png" />
+                <div className="course-img-container">
+                  <img
+                    src={`http://localhost:8080/images/${course.image}`}
+                    alt="course image"
+                    onError={(event) => {
+                      event.currentTarget.src = "hapowl.png";
+                    }}
+                  />
+                </div>
                 <div>
                   <span className="course-name">{course.name}</span>
                   <span className="course-intro">{course.description}</span>
@@ -133,9 +139,9 @@ export default function AllCourses() {
       <div className="pagination">
         <Pagination.Prev
           className={currentPage === 1 ? "active" : ""}
-          onClick={() =>
-            currentPage > 1 ? handlePageChange(currentPage - 1) : null
-          }
+          onClick={() => {
+            if (currentPage > 1) handlePageChange(currentPage - 1);
+          }}
         />
         {[...Array(numberOfPages)].map((_, index) => {
           return (
@@ -153,11 +159,9 @@ export default function AllCourses() {
         })}
         <Pagination.Next
           className={currentPage === numberOfPages ? "active" : ""}
-          onClick={
-            currentPage < numberOfPages
-              ? handlePageChange(currentPage + 1)
-              : null
-          }
+          onClick={() => {
+            if (currentPage < numberOfPages) handlePageChange(currentPage + 1);
+          }}
         />
       </div>
     </div>

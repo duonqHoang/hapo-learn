@@ -163,8 +163,11 @@ function CourseCards({ courses, navigate }) {
           <div className="cardImg-container">
             <img
               className="card-img"
-              src="images/courses/html.png"
+              src={`http://localhost:8080/images/${course.image}`}
               alt="Course logo"
+              onError={(event) => {
+                event.currentTarget.src = "hapowl.png";
+              }}
             />
           </div>
           <div className="card-content">
