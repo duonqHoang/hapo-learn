@@ -11,13 +11,15 @@ async function getLoginStatus(dispatch) {
   }
 }
 
-function checkAuth(isAuthenticated, dispatch) {
-  if (!isAuthenticated) {
+async function checkAuth(dispatch) {
+  try {
+    await axios.get("/login");
+    return null;
+  } catch (err) {
+    console.log(err);
     dispatch(userActions.logOut());
     return redirect("/signIn");
   }
-
-  return null;
 }
 
 function checkNotAuth(isAuthenticated) {
@@ -38,4 +40,23 @@ async function checkResetPass({ username, token }) {
   }
 }
 
-export { checkAuth, checkNotAuth, getLoginStatus, checkResetPass };
+async function checkIsTeacher() {
+  try {
+    const res = await axios.get("/user");
+    const profile = res.data;
+    if (!profile.teacherProfile) {
+      return redirect("/");
+    }
+    return null;
+  } catch (err) {
+    return redirect("/");
+  }
+}
+
+export {
+  checkAuth,
+  checkNotAuth,
+  getLoginStatus,
+  checkResetPass,
+  checkIsTeacher,
+};

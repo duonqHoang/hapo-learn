@@ -13,4 +13,15 @@ const getProfile = () => {
   };
 };
 
-export { getProfile };
+const logOut = () => {
+  return async (dispatch) => {
+    try {
+      await axios.post("logout");
+      dispatch(userActions.logOut());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export { getProfile, logOut };

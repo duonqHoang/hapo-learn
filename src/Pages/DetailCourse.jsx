@@ -358,9 +358,17 @@ function Teachers({ teacher }) {
       <div className="teachers-title">Main Teachers</div>
       <div className="teacher">
         <div className="teacher-info">
-          <img src={"images/teacher-icon.png"} />
+          <div className="teacher-avt-container">
+            <img
+              src={`http://localhost:8080/images/${teacher.user.avatar}`}
+              alt="teacher avatar"
+              onError={(event) => {
+                event.currentTarget.src = "images/teacher-icon.png";
+              }}
+            />
+          </div>
           <div>
-            <div className="teacher-name">{teacher.name}</div>
+            <div className="teacher-name">{teacher.user.name}</div>
             <div className="teacher-position">{teacher.role}</div>
             <div className="social-links">
               {teacher?.links?.google && (
@@ -455,7 +463,7 @@ function Teachers({ teacher }) {
             </div>
           </div>
         </div>
-        <p className="teacher-description">{teacher.bio}</p>
+        <p className="teacher-description">{teacher.user.bio}</p>
       </div>
     </>
   );
@@ -467,7 +475,7 @@ const starStyles = {
   inactiveFillColor: "#D8D8D8",
 };
 
-function Reviews({ courseID, navigate }) {
+function Reviews({ courseID }) {
   const [reviewData, setReviewData] = useState({
     reviews: [],
     reviewsCount: 0,
@@ -569,7 +577,19 @@ function Reviews({ courseID, navigate }) {
         return (
           <div className="review">
             <div className="review-header">
-              <img src={"images/user-avatar.jpg"} />
+              <div className="user-avt-container">
+                <img
+                  src={
+                    review.user
+                      ? `http://localhost:8080/images/${review.user.avatar}`
+                      : "images/user-avatar.jpg"
+                  }
+                  alt="user avatar"
+                  onError={(event) => {
+                    event.currentTarget.src = "images/user-avatar.jpg";
+                  }}
+                />
+              </div>
               <div className="user-name">{user.name}</div>
               <div style={{ display: "block", marginLeft: "15px" }}>
                 <Rating

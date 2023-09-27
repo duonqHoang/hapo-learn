@@ -10,6 +10,7 @@ const initialUserState = {
     address: "",
     bio: "",
     courses: [],
+    teacherProfile: null,
   },
 };
 

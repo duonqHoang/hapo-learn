@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  redirect,
+} from "react-router-dom";
 import Home from "./Pages/Home";
 import DetailCourse from "./Pages/DetailCourse";
 import Profile from "./Pages/Profile";
@@ -9,6 +13,7 @@ import SignIn from "./Pages/SignIn";
 import RootPage from "./Pages/RootPage";
 import {
   checkAuth,
+  checkIsTeacher,
   checkNotAuth,
   checkResetPass,
   getLoginStatus,
@@ -16,9 +21,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import ForgetPassword from "./Pages/ForgetPassword";
 import ResetPassword from "./Pages/ResetPassword";
+import AddCourse from "./Pages/AddCourse";
 
 function App() {
-  const isAuth = useSelector((state) => state.user.isAuthenticated);
+  const user = useSelector((state) => state.user);
+  const isAuth = user.isAuthenticated;
   const dispatch = useDispatch();
 
   const router = createBrowserRouter([
@@ -41,7 +48,7 @@ function App() {
         {
           path: "profile",
           element: <Profile />,
-          loader: () => checkAuth(isAuth, dispatch),
+          loader: () => checkAuth(dispatch),
         },
         { path: "forget-password", element: <ForgetPassword /> },
         { path: "courses", element: <AllCourses /> },
@@ -52,6 +59,11 @@ function App() {
         {
           path: "courses/:courseID/:lessonNumber",
           element: <LessonDetail />,
+        },
+        {
+          path: "create-course",
+          element: <AddCourse />,
+          loader: checkIsTeacher,
         },
       ],
     },

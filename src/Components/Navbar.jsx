@@ -5,8 +5,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { VscChromeClose } from "react-icons/vsc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../Store/user";
-import axios from "../Utils/axios";
+import { logOut } from "../Store/user-action";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -21,12 +20,8 @@ export default function Navbar() {
   const isAuth = useSelector((state) => state.user.isAuthenticated);
 
   const handleLogout = async () => {
-    const res = await axios.post("logout");
-    dispatch(userActions.logOut());
+    dispatch(logOut());
     navigate("/");
-    if (res.statusText !== "OK") {
-      console.log("Logout error");
-    }
   };
 
   return (
