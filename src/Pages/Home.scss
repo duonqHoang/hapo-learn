@@ -124,16 +124,15 @@
   }
 
   .cardImg-container {
-    background-color: blue;
+    height: 200px;
     border-radius: 15px 15px 0 0;
-    padding: 50px;
-    @include common.flex-vertical-center();
+    overflow: hidden;
   }
 
   .card-img {
-    width: 50%;
-    margin: auto;
-    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .card-title {
     color: #b2d235;

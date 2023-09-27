@@ -31,34 +31,6 @@ const starStyles = {
 };
 
 export default function ReviewsCarousel({ reviews }) {
-  /*
-  const reviews = [
-    {
-      comment: `“A wonderful course on how to start. Eddie beautifully conveys all essentials of a becoming a good Angular developer. Very glad to have taken this course. Thank you Eddie Bryan.”`,
-      star: 4.5,
-      userName: "Tran Tuan Hoang",
-      courseName: "Python",
-    },
-    {
-      comment: `“A wonderful course on how to start. Eddie beautifully conveys all essentials of a becoming a good Angular developer. Very glad to have taken this course. Thank you Eddie Bryan.”`,
-      star: 4.5,
-      userName: "Tran Tuan Hoang",
-      courseName: "Python",
-    },
-    {
-      comment: `“A wonderful course on how to start. Eddie beautifully conveys all essentials of a becoming a good Angular developer. Very glad to have taken this course. Thank you Eddie Bryan.”`,
-      star: 4.5,
-      userName: "Tran Tuan Hoang",
-      courseName: "Python",
-    },
-    {
-      comment: `“A wonderful course on how to start. Eddie beautifully conveys all essentials of a becoming a good Angular developer. Very glad to have taken this course. Thank you Eddie Bryan.”`,
-      star: 4.5,
-      userName: "Tran Tuan Hoang",
-      courseName: "Python",
-    },
-  ];
-  */
   return (
     <div className="carousel">
       <Slider {...settings}>
