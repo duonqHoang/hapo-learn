@@ -1,9 +1,11 @@
 import "./LessonDetail.scss";
 import { Container, Row, Col } from "react-bootstrap";
 import RoutePath from "../Components/RoutePath";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "../Utils/axios";
 
+/*
 const course = {
   name: "HTML/CSS/Js",
   img: "images/courses/html.png",
@@ -12,7 +14,7 @@ const course = {
     "Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque. Pellentesque tristique fringilla tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla dignissim. Aenean viverra tincidunt nibh, in imperdiet nunc. Suspendisse eu ante pretium, consectetur leo at, congue quam. Nullam hendrerit porta ante vitae tristique.",
   learners: 500,
   lessons: 6,
-  tags: ["#learn", "#code"],
+  tags: ,
   price: 0,
 };
 
@@ -21,23 +23,29 @@ const lesson = {
     "Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque. Pellentesque tristique fringilla tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla dignissim. Aenean viverra tincidunt nibh, in imperdiet nunc. Suspendisse eu ante pretium, consectetur leo at, congue quam. Nullam hendrerit porta ante vitae tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum ligula libero, feugiat faucibus mattis eget, pulvinar et ligula.",
   requirement:
     "Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque. Pellentesque tristique fringilla tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla dignissim. Aenean viverra tincidunt nibh, in imperdiet nunc. Suspendisse eu ante pretium, consectetur leo at, congue quam. Nullam hendrerit porta ante vitae tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum ligula libero, feugiat faucibus mattis eget, pulvinar et ligula.",
-  documents: [
-    {
-      type: "Lesson",
-      title: "Program learn HTML/CSS",
-    },
-    {
-      type: "PDF",
-      title: "Download course slides",
-    },
-    { type: "Video", title: "Download course videos" },
-  ],
-  tags: ["#learn", "#html", "#css", "#coder", "#developer", "#js"],
 };
+*/
+const documents = [
+  {
+    type: "Lesson",
+    title: "Program learn HTML/CSS",
+  },
+  {
+    type: "PDF",
+    title: "Download course slides",
+  },
+  { type: "Video", title: "Download course videos" },
+];
+
+const tags = ["#learn", "#html", "#css", "#coder", "#developer", "#js"];
 
 export default function LessonDetail() {
   const [content, setContent] = useState("descriptions");
+  const [course, setCourse] = useState({});
+  const [lesson, setLesson] = useState({});
   const navigate = useNavigate();
+
+  const params = useParams();
 
   const changeContent = (newContent, e) => {
     if (newContent !== content) setContent(newContent);
@@ -48,6 +56,31 @@ export default function LessonDetail() {
     }
   };
 
+  const fetchLessonData = async () => {
+    try {
+      const res = await axios.get(
+        `/lessons?courseID=${params.courseID}&lessonNumber=${params.lessonNumber}`
+      );
+      setLesson(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchCourseData = async () => {
+    try {
+      const res = await axios.get("/courses/" + params.courseID);
+      setCourse(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchLessonData();
+    fetchCourseData();
+  }, []);
+
   return (
     <>
       <RoutePath />
@@ -56,11 +89,14 @@ export default function LessonDetail() {
           <Row>
             <Col xl={8} lg={6} md={12} sm={12}>
               <div>
-                <div
-                  className="lesson-img-container"
-                  style={{ backgroundColor: course.color }}
-                >
-                  <img src={course.img} alt="course logo image" />
+                <div className="lesson-img-container">
+                  <img
+                    src={`http://localhost:8080/images/${course.image}`}
+                    alt="course logo image"
+                    onError={(event) => {
+                      event.currentTarget.src = "Hapo_Learn.png";
+                    }}
+                  />
                 </div>
 
                 <div className="lesson-contents">
@@ -75,7 +111,9 @@ export default function LessonDetail() {
                       Documents
                     </span>
                   </div>
-                  {content === "descriptions" && <Descriptions />}
+                  {content === "descriptions" && (
+                    <Descriptions lesson={lesson} />
+                  )}
                   {content === "documents" && <Documents />}
                 </div>
               </div>
@@ -96,7 +134,7 @@ export default function LessonDetail() {
                     <span>Learners</span>
                   </div>
                   <div className="colon">:</div>
-                  <div className="info-right">{course.learners}</div>
+                  <div className="info-right">{course.learnersCount}</div>
                 </div>
                 <div className="info-row">
                   <div className="info-left">
@@ -113,16 +151,18 @@ export default function LessonDetail() {
                   </div>
                   <div className="colon">:</div>
                   <div className="info-right">
-                    {course.tags.map((tag, i) => {
-                      return (
-                        <>
-                          <a key={i} href="#">
-                            {tag}
-                          </a>
-                          {i === course.tags.length - 1 ? "" : ", "}
-                        </>
-                      );
-                    })}
+                    {course.tags
+                      ? course.tags.map((tag, i) => {
+                          return (
+                            <>
+                              <a key={i} href="#">
+                                {tag}
+                              </a>
+                              {i === course.tags.length - 1 ? "" : ", "}
+                            </>
+                          );
+                        })
+                      : null}
                   </div>
                 </div>
                 <div className="info-row">
@@ -175,39 +215,17 @@ export default function LessonDetail() {
   );
 }
 
-function Descriptions() {
+function Descriptions({ lesson }) {
   return (
     <div className="lesson-descriptions">
-      <div className="description-title">Descriptions lesson</div>
-      <p className="description-txt">
-        Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat
-        dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis
-        sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada
-        felis quis, ultricies convallis neque. Pellentesque tristique fringilla
-        tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla
-        dignissim. Aenean viverra tincidunt nibh, in imperdiet nunc. Suspendisse
-        eu ante pretium, consectetur leo at, congue quam. Nullam hendrerit porta
-        ante vitae tristique. Vestibulum ante ipsum primis in faucibus orci
-        luctus et ultrices posuere cubilia Curae; Vestibulum ligula libero,
-        feugiat faucibus mattis eget, pulvinar et ligula.
-      </p>
+      <div className="description-title">{lesson.name}</div>
+      <p className="description-txt">{lesson.description}</p>
       <div className="description-title">Requirements</div>
-      <p className="description-txt">
-        Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat
-        dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis
-        sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada
-        felis quis, ultricies convallis neque. Pellentesque tristique fringilla
-        tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla
-        dignissim. Aenean viverra tincidunt nibh, in imperdiet nunc. Suspendisse
-        eu ante pretium, consectetur leo at, congue quam. Nullam hendrerit porta
-        ante vitae tristique. Vestibulum ante ipsum primis in faucibus orci
-        luctus et ultrices posuere cubilia Curae; Vestibulum ligula libero,
-        feugiat faucibus mattis eget, pulvinar et ligula.
-      </p>
+      <p className="description-txt">{lesson.requirement}</p>
       <div className="tags-container">
         <div className="tags-title">Tags:</div>
         <div className="tags">
-          {lesson.tags.map((tag, i) => {
+          {tags.map((tag, i) => {
             return (
               <div key={i} className="tag">
                 {tag}
@@ -224,7 +242,7 @@ function Documents() {
   return (
     <div className="documents">
       <span className="program-txt">Program</span>
-      {lesson.documents.map((document, i) => {
+      {documents.map((document, i) => {
         return (
           <div className="document-row" key={i}>
             <div className="document-row-left">

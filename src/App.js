@@ -50,7 +50,7 @@ function App() {
           element: <DetailCourse />,
         },
         {
-          path: "courses/:courseID/:lessonID",
+          path: "courses/:courseID/:lessonNumber",
           element: <LessonDetail />,
         },
       ],

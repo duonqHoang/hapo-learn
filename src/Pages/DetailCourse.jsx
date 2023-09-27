@@ -85,7 +85,13 @@ export default function DetailCourse() {
                 className="img-container"
                 style={{ backgroundColor: "#3F6185" }}
               >
-                <img src={"images/courses/html.png"} alt="course logo image" />
+                <img
+                  src={`http://localhost:8080/images/${course.image}`}
+                  alt="course logo image"
+                  onError={(event) => {
+                    event.currentTarget.src = "hapowl.png";
+                  }}
+                />
               </div>
             </Col>
             <Col xl={4} lg={6} md={12} sm={12}>
@@ -492,7 +498,7 @@ function Reviews({ courseID, navigate }) {
         star: formStar,
         comment: form.comment.value,
       });
-      navigate(0);
+      fetchReviewData();
     } catch (err) {
       console.log(err?.response?.data || err.message);
     }
