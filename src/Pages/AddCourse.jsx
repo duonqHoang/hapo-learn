@@ -1,13 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./AddCourse.scss";
-import { Form } from "react-bootstrap";
+import { Button, Form, InputGroup, ListGroup } from "react-bootstrap";
 import axios from "../Utils/axios";
 import { useNavigate } from "react-router-dom";
+import { FaPlus } from "react-icons/fa";
 
 export default function AddCourse() {
   const [file, setFile] = useState();
   const [preview, setPreview] = useState();
   const [validated, setValidated] = useState(false);
+  const [lessons, setLessons] = useState([]);
+
+  const lessonNameRef = useRef();
+  const lessonTimeRef = useRef();
 
   const navigate = useNavigate();
 
@@ -31,6 +36,16 @@ export default function AddCourse() {
     setFile(e.target.files[0]);
   };
 
+  const addLesson = () => {
+    const name = lessonNameRef.current.value;
+    const time = lessonTimeRef.current.value;
+    if (name && time) {
+      setLessons([...lessons, { name, time }]);
+      lessonNameRef.current.value = "";
+      lessonTimeRef.current.value = "";
+    }
+  };
+
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
 
@@ -48,6 +63,7 @@ export default function AddCourse() {
             price: form.price.value,
             time: form.time.value,
             image: file,
+            lessons: JSON.stringify(lessons),
           },
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -96,7 +112,42 @@ export default function AddCourse() {
             required
           />
         </Form.Group>
-        {file && <img className="preview" src={preview} />}
+        {file && <img className="preview" alt="course preview" src={preview} />}
+        <Form.Group>
+          <Form.Label>Lessons</Form.Label>
+          <ListGroup numbered>
+            {lessons.map((lesson) => {
+              return (
+                <ListGroup.Item>
+                  {lesson.name}, Time: {lesson.time}h
+                </ListGroup.Item>
+              );
+            })}
+            <InputGroup
+              style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+            >
+              <Form.Control
+                ref={lessonNameRef}
+                name="lessonName"
+                placeholder="Lesson name"
+                style={{ width: "55%" }}
+              />
+              <Form.Control
+                ref={lessonTimeRef}
+                name="lessonTime"
+                type="number"
+                placeholder="Time"
+              />
+              <Button
+                variant="light"
+                className="add-lesson-btn"
+                onClick={addLesson}
+              >
+                <FaPlus />
+              </Button>
+            </InputGroup>
+          </ListGroup>
+        </Form.Group>
         <button className="submit-course-btn" type="submit">
           Submit
         </button>

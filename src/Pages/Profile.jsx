@@ -2,6 +2,7 @@ import { Row, Col, Container, Form } from "react-bootstrap";
 import { FaCamera } from "react-icons/fa";
 import "./Profile.scss";
 import { FaBirthdayCake, FaPhoneAlt, FaHome } from "react-icons/fa";
+import { MdWork } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { forwardRef, useEffect, useRef, useState } from "react";
@@ -115,6 +116,12 @@ export default function Profile() {
                 <div className="profile-email">{profile.email}</div>
               </div>
               <div className="info-bottom">
+                {profile.teacherProfile && (
+                  <div className="info-row">
+                    <MdWork className="row-icon role-icon" />
+                    <span>{profile.teacherProfile.role}</span>
+                  </div>
+                )}
                 <div className="info-row">
                   <FaBirthdayCake className="row-icon birth-icon" />
                   <span>{profile.dob}</span>

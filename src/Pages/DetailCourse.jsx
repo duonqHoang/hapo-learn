@@ -65,15 +65,6 @@ export default function DetailCourse() {
     }
   };
 
-  const changeContent = (newContent, e) => {
-    if (newContent !== content) setContent(newContent);
-    const current = document.querySelector(".current");
-    if (current !== e.target) {
-      current.classList.remove("current");
-      e.target.classList.add("current");
-    }
-  };
-
   return (
     <>
       <RoutePath courseID={course.id} />
@@ -106,15 +97,21 @@ export default function DetailCourse() {
               <div className="course-contents">
                 <div className="buttons">
                   <span
-                    className="current"
-                    onClick={(e) => changeContent("lessons", e)}
+                    className={content === "lessons" ? "current" : ""}
+                    onClick={() => setContent("lessons")}
                   >
                     Lessons
                   </span>
-                  <span onClick={(e) => changeContent("teachers", e)}>
+                  <span
+                    className={content === "teachers" ? "current" : ""}
+                    onClick={() => setContent("teachers")}
+                  >
                     Teacher
                   </span>
-                  <span onClick={(e) => changeContent("reviews", e)}>
+                  <span
+                    className={content === "reviews" ? "current" : ""}
+                    onClick={() => setContent("reviews")}
+                  >
                     Reviews
                   </span>
                 </div>
