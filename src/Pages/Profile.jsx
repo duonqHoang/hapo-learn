@@ -2,6 +2,7 @@ import { Row, Col, Container, Form } from "react-bootstrap";
 import { FaCamera } from "react-icons/fa";
 import "./Profile.scss";
 import { FaBirthdayCake, FaPhoneAlt, FaHome } from "react-icons/fa";
+import { FaGear } from "react-icons/fa6";
 import { MdWork } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -59,6 +60,7 @@ export default function Profile() {
           phone: form.phone.value,
           address: form.address.value,
           bio: form.bio.value,
+          role: form.role.value,
         });
         dispatch(getProfile());
       } catch (err) {
@@ -201,17 +203,27 @@ export default function Profile() {
                     {profile?.teacherProfile?.courses.map((course) => {
                       return (
                         <div key={course.id} className="enrolled-course">
-                          <div
-                            className="courseImg-container"
-                            onClick={() => navigate(`/courses/${course.id}`)}
-                          >
-                            <img
-                              src={`http://localhost:8080/images/${course.image}`}
-                              alt="course logo"
-                              onError={(event) => {
-                                event.currentTarget.src = "hapowl.png";
-                              }}
-                            />
+                          <div style={{ position: "relative" }}>
+                            <div
+                              className="courseImg-container"
+                              onClick={() => navigate(`/courses/${course.id}`)}
+                            >
+                              <img
+                                src={`http://localhost:8080/images/${course.image}`}
+                                alt="course logo"
+                                onError={(event) => {
+                                  event.currentTarget.src = "hapowl.png";
+                                }}
+                              />
+                            </div>
+                            <div
+                              className="course-update-container"
+                              onClick={() =>
+                                navigate("/update-course/" + course.id)
+                              }
+                            >
+                              <FaGear className="course-update-btn" />
+                            </div>
                           </div>
                           <span>{course.name}</span>
                         </div>
@@ -286,6 +298,16 @@ export default function Profile() {
                           defaultValue={profile.address}
                         />
                       </Form.Group>
+                      {profile.teacherProfile && (
+                        <Form.Group className="mt-3">
+                          <Form.Label className="input-label">Role</Form.Label>
+                          <Form.Control
+                            name="role"
+                            placeholder="Role"
+                            defaultValue={profile.teacherProfile.role}
+                          />
+                        </Form.Group>
+                      )}
                     </Col>
                     <Col xl={6}>
                       <Form.Group className="mt-3">

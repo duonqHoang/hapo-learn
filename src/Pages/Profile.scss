@@ -143,11 +143,6 @@
     align-items: center;
   }
 
-  .enrolled-course:hover {
-    opacity: 80%;
-    cursor: pointer;
-  }
-
   .courseImg-container {
     width: 65px;
     height: 65px;
@@ -159,6 +154,11 @@
       height: 100%;
       object-fit: cover;
     }
+  }
+
+  .courseImg-container:hover {
+    opacity: 80%;
+    cursor: pointer;
   }
 
   .add-course {
@@ -178,6 +178,24 @@
     .add-course-btn:hover {
       opacity: 80%;
     }
+  }
+
+  .course-update-container {
+    background-color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+  }
+
+  .course-update-container > .course-update-btn:hover {
+    opacity: 0.8;
   }
 }
 

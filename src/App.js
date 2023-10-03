@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ForgetPassword from "./Pages/ForgetPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import AddCourse from "./Pages/AddCourse";
+import UpdateCourse from "./Pages/UpdateCourse";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -63,6 +64,11 @@ function App() {
         {
           path: "create-course",
           element: <AddCourse />,
+          loader: checkIsTeacher,
+        },
+        {
+          path: "update-course/:courseID",
+          element: <UpdateCourse />,
           loader: checkIsTeacher,
         },
       ],
