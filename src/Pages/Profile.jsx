@@ -1,4 +1,13 @@
-import { Row, Col, Container, Form } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Button,
+  Overlay,
+  Tooltip,
+} from "react-bootstrap";
 import { FaCamera } from "react-icons/fa";
 import "./Profile.scss";
 import { FaBirthdayCake, FaPhoneAlt, FaHome } from "react-icons/fa";
@@ -19,8 +28,11 @@ export default function Profile() {
   const [error, setError] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [teacherModal, setTeacherModal] = useState(false);
+  const [tooltip, setTooltip] = useState(false);
+  const nameInput = useRef(null);
   const avtInput = useRef();
+  const roleInput = useRef();
 
   useEffect(() => {
     dispatch(getProfile());
@@ -45,6 +57,7 @@ export default function Profile() {
 
   const submitProfile = async (event) => {
     setError(null);
+    setTooltip(false);
     const form = event.currentTarget;
 
     if (form.checkValidity() === false) {
@@ -60,7 +73,7 @@ export default function Profile() {
           phone: form.phone.value,
           address: form.address.value,
           bio: form.bio.value,
-          role: form.role.value,
+          role: form.role ? form.role.value : null,
         });
         dispatch(getProfile());
       } catch (err) {
@@ -84,8 +97,58 @@ export default function Profile() {
     }
   };
 
+  const handleClose = () => setTeacherModal(false);
+
+  const handleShow = () => {
+    if (!profile.name) {
+      setTooltip(true);
+      nameInput.current.scrollIntoView({
+        behavior: "auto",
+        block: "center",
+        inline: "center",
+      });
+    } else setTeacherModal(true);
+  };
+
+  const handleTeacherRegister = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post("/teachers", { role: roleInput.current.value });
+      dispatch(getProfile());
+      handleClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="profile-page">
+      <Modal show={teacherModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleTeacherRegister}>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Role</Form.Label>
+              <Form.Control
+                ref={roleInput}
+                placeholder="Enter your role to start teaching"
+                required
+                autoFocus
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleTeacherRegister}>
+            Start teaching
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Container>
         <Row>
           <Col xl={3} lg={4} md={12}>
@@ -142,6 +205,25 @@ export default function Profile() {
           </Col>
           <Col xl={9} lg={8} md={12}>
             <div className="profile-right">
+              {!profile.teacherProfile && (
+                <>
+                  <div className="teacher-register" onClick={handleShow}>
+                    Start teaching and share your knowledge!
+                  </div>
+                  <Overlay
+                    target={nameInput.current}
+                    show={tooltip}
+                    placement="top"
+                  >
+                    {(props) => (
+                      <Tooltip id="overlay" {...props}>
+                        Please update your name first...
+                      </Tooltip>
+                    )}
+                  </Overlay>
+                </>
+              )}
+
               <div className="section-title">
                 <div className="section-title-txt">My courses</div>
                 <div className="title-underline">
@@ -273,6 +355,7 @@ export default function Profile() {
                       <Form.Group className="mt-3">
                         <Form.Label className="input-label">Name</Form.Label>
                         <Form.Control
+                          ref={nameInput}
                           name="name"
                           placeholder="Name"
                           defaultValue={profile.name}

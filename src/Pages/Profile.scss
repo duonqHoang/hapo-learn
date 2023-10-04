@@ -8,6 +8,7 @@
 
 .profile-right {
   padding-top: 120px;
+  position: relative;
 }
 
 .info-top {
@@ -103,6 +104,22 @@
     text-align: justify;
     margin-top: 20px;
   }
+}
+
+.teacher-register {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  color: #b2d235;
+  font-family: "UTM BryantLG Bold";
+  font-size: 18px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.teacher-register:hover {
+  cursor: pointer;
+  filter: brightness(0.7);
 }
 
 .section-title {
