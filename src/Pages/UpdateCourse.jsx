@@ -64,7 +64,7 @@ export default function UpdateCourse() {
   const addLesson = () => {
     const name = lessonNameRef.current.value;
     const time = lessonTimeRef.current.value;
-    if (name && time) {
+    if (name && time && time > 0) {
       setLessons([...lessons, { name, time }]);
       lessonNameRef.current.value = "";
       lessonTimeRef.current.value = "";
@@ -86,7 +86,6 @@ export default function UpdateCourse() {
             name: form.name.value,
             description: form.description.value,
             price: form.price.value,
-            time: form.time.value,
             image: file || null,
             lessons: JSON.stringify(lessons),
           },
@@ -139,16 +138,8 @@ export default function UpdateCourse() {
           <Form.Control
             name="price"
             type="number"
+            min="0"
             defaultValue={course.price}
-            required
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Time</Form.Label>
-          <Form.Control
-            name="time"
-            type="number"
-            defaultValue={course.time}
             required
           />
         </Form.Group>
@@ -180,6 +171,7 @@ export default function UpdateCourse() {
                 ref={lessonTimeRef}
                 name="lessonTime"
                 type="number"
+                min="0.1"
                 placeholder="Time"
               />
               <Button

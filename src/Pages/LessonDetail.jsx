@@ -64,6 +64,15 @@ export default function LessonDetail() {
     }
   };
 
+  const unEnrollCourse = async () => {
+    try {
+      await axios.post(`/courses/${params.courseID}/unenroll`);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchLessonData();
     fetchCourseData();
@@ -173,12 +182,7 @@ export default function LessonDetail() {
                     {course.price === 0 ? "Free" : course.price}
                   </div>
                 </div>
-                <button
-                  className="course-stop-btn"
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
+                <button className="course-stop-btn" onClick={unEnrollCourse}>
                   Kết thúc khóa học
                 </button>
               </div>

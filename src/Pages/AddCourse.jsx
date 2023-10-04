@@ -96,7 +96,7 @@ export default function AddCourse() {
         </Form.Group>
         <Form.Group>
           <Form.Label>Price</Form.Label>
-          <Form.Control name="price" type="number" required />
+          <Form.Control name="price" type="number" min="0" required />
         </Form.Group>
         <Form.Group>
           <Form.Label>Image</Form.Label>
@@ -114,35 +114,43 @@ export default function AddCourse() {
             {lessons.map((lesson) => {
               return (
                 <ListGroup.Item>
-                  {lesson.name}, Time: {lesson.time}h
+                  <div style={{ display: "inline-block" }}>{lesson.name}</div>
+                  <div style={{ display: "inline-block", float: "right" }}>
+                    Time: {lesson.time}h
+                  </div>
                 </ListGroup.Item>
               );
             })}
-            <InputGroup
-              style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-            >
-              <Form.Control
-                ref={lessonNameRef}
-                name="lessonName"
-                placeholder="Lesson name"
-                style={{ width: "55%" }}
-              />
-              <Form.Control
-                ref={lessonTimeRef}
-                name="lessonTime"
-                type="number"
-                placeholder="Time"
-              />
-              <Button
-                variant="light"
-                className="add-lesson-btn"
-                onClick={addLesson}
-              >
-                <FaPlus />
-              </Button>
-            </InputGroup>
           </ListGroup>
         </Form.Group>
+        <InputGroup
+          style={{
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            marginTop: "10px",
+          }}
+        >
+          <Form.Control
+            ref={lessonNameRef}
+            name="lessonName"
+            placeholder="Lesson name"
+            style={{ width: "55%" }}
+          />
+          <Form.Control
+            ref={lessonTimeRef}
+            name="lessonTime"
+            type="number"
+            placeholder="Time"
+            min="0.1"
+          />
+          <Button
+            variant="light"
+            className="add-lesson-btn"
+            onClick={addLesson}
+          >
+            <FaPlus />
+          </Button>
+        </InputGroup>
         <button className="submit-course-btn" type="submit">
           Submit
         </button>
