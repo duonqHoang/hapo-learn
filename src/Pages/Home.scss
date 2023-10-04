@@ -143,6 +143,16 @@
   }
   .card-description {
     margin: 10px 20px 0;
+    line-height: 1.5em;
+    min-height: 6em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -moz-box-orient: vertical;
+    -webkit-box-orient: vertical;
+    display: -moz-box;
+    display: -webkit-box;
   }
   button {
     margin: 20px 20px 40px;

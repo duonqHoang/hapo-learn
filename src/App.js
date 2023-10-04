@@ -1,7 +1,6 @@
 import {
   RouterProvider,
   createBrowserRouter,
-  redirect,
 } from "react-router-dom";
 import Home from "./Pages/Home";
 import DetailCourse from "./Pages/DetailCourse";
@@ -60,6 +59,7 @@ function App() {
         {
           path: "courses/:courseID/:lessonNumber",
           element: <LessonDetail />,
+          loader: () => checkAuth(dispatch),
         },
         {
           path: "create-course",

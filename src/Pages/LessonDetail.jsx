@@ -17,7 +17,7 @@ const documents = [
   { type: "Video", title: "Download course videos" },
 ];
 
-const tags = ["#learn", "#html", "#css", "#coder", "#developer", "#js"];
+const tags = ["#coder", "#js"];
 
 export default function LessonDetail() {
   const [content, setContent] = useState("descriptions");
@@ -56,9 +56,18 @@ export default function LessonDetail() {
     }
   };
 
+  const enrollCourse = async () => {
+    try {
+      await axios.post(`/courses/${params.courseID}/enroll`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchLessonData();
     fetchCourseData();
+    enrollCourse();
   }, []);
 
   return (
@@ -142,7 +151,16 @@ export default function LessonDetail() {
                             </>
                           );
                         })
-                      : null}
+                      : tags.map((tag, i) => {
+                          return (
+                            <>
+                              <a key={i} href="#">
+                                {tag}
+                              </a>
+                              {i === tags.length - 1 ? "" : ", "}
+                            </>
+                          );
+                        })}
                   </div>
                 </div>
                 <div className="info-row">

@@ -129,7 +129,7 @@ export default function AllCourses() {
                 </div>
                 <div className="stat-col">
                   <span className="stat-title">Times</span>
-                  <span className="stat-number">{course.time}</span>
+                  <span className="stat-number">{course.time || "0"}(h)</span>
                 </div>
               </div>
             </div>

@@ -66,14 +66,18 @@ export default function Navbar() {
               SIGN OUT
             </li>
           )}
-          <li>
-            <Link
-              to="profile"
-              className={location.pathname.includes("profile") ? "active" : ""}
-            >
-              PROFILE
-            </Link>
-          </li>
+          {isAuth && (
+            <li>
+              <Link
+                to="profile"
+                className={
+                  location.pathname.includes("profile") ? "active" : ""
+                }
+              >
+                PROFILE
+              </Link>
+            </li>
+          )}
         </ul>
         <button onClick={() => setOpen(!open)}>
           {open ? (

@@ -8,7 +8,6 @@ const settings = {
   speed: 500,
   autoplay: true,
   autoplaySpeed: 2000,
-  slidesToShow: 2,
   slidesToScroll: 1,
   pauseOnHover: true,
   responsive: [
@@ -33,7 +32,7 @@ const starStyles = {
 export default function ReviewsCarousel({ reviews }) {
   return (
     <div className="carousel">
-      <Slider {...settings}>
+      <Slider {...settings} {...{ slidesToShow: reviews.length > 1 ? 2 : 1 }}>
         {reviews.map((review) => {
           return (
             <div key={review.id} className="review-container">

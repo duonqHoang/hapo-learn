@@ -155,7 +155,7 @@ export default function DetailCourse() {
                     <span>Time</span>
                   </div>
                   <div className="colon">:</div>
-                  <div className="info-right">{course.time} hours</div>
+                  <div className="info-right">{course.time || "0"} hours</div>
                 </div>
                 <div className="info-col">
                   <div className="info-left">
