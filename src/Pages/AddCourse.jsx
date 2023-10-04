@@ -61,7 +61,6 @@ export default function AddCourse() {
             name: form.name.value,
             description: form.description.value,
             price: form.price.value,
-            time: form.time.value,
             image: file,
             lessons: JSON.stringify(lessons),
           },
@@ -98,10 +97,6 @@ export default function AddCourse() {
         <Form.Group>
           <Form.Label>Price</Form.Label>
           <Form.Control name="price" type="number" required />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Time</Form.Label>
-          <Form.Control name="time" type="number" required />
         </Form.Group>
         <Form.Group>
           <Form.Label>Image</Form.Label>

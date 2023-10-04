@@ -56,7 +56,7 @@ export default function ReviewsCarousel({ reviews }) {
                 </div>
                 <div>
                   <div className="userName">
-                    {review?.user?.name || "Anonymous"}
+                    {review?.user?.name || "Unnamed User"}
                   </div>
                   <div className="courseName">{review.course.name}</div>
                   <Rating

@@ -570,7 +570,7 @@ function Reviews({ courseID }) {
         </Dropdown.Menu>
       </Dropdown>
       {reviewData.reviews.map((review) => {
-        const user = review.user || { name: "Anonymous" };
+        const user = review.user || { name: "Unnamed User" };
         return (
           <div className="review">
             <div className="review-header">

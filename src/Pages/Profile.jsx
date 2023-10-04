@@ -177,7 +177,9 @@ export default function Profile() {
                   accept="image/png, image/jpeg"
                 />
 
-                <div className="profile-name">{profile.name}</div>
+                <div className="profile-name">
+                  {profile.name || "Unnamed User"}
+                </div>
                 <div className="profile-email">{profile.email}</div>
               </div>
               <div className="info-bottom">
