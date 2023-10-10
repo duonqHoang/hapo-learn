@@ -20,11 +20,12 @@ export default function DetailCourse() {
   const [content, setContent] = useState("lessons");
   const [course, setCourse] = useState({});
   const [userCourses, setUserCourses] = useState([]);
-  const isLoggedIn = useSelector((state) => state.user.isAuthenticated);
+  const user = useSelector((state) => state.user);
+  const isLoggedIn = user.isAuthenticated;
+  const isOwnCourse = course.teacher?.id === user.profile.teacherProfile?.id;
   const navigate = useNavigate();
 
   const params = useParams();
-
   const enrolled = userCourses.find((course) => course.id == params.courseID)
     ? true
     : false;
@@ -60,6 +61,7 @@ export default function DetailCourse() {
     try {
       await axios.post(`/courses/${params.courseID}/unenroll`);
       fetchUserCourses();
+      fetchCourseData();
     } catch (err) {
       console.log(err);
     }
@@ -79,9 +81,9 @@ export default function DetailCourse() {
                 <img
                   src={`http://localhost:8080/images/${course.image}`}
                   alt="course logo image"
-                  onError={(event) => {
-                    event.currentTarget.src = "hapowl.png";
-                  }}
+                  // onError={(event) => {
+                  //   event.currentTarget.src = "hapowl.png";
+                  // }}
                 />
               </div>
             </Col>
@@ -120,7 +122,9 @@ export default function DetailCourse() {
                     courseID={params.courseID}
                     navigate={navigate}
                     enrolled={enrolled}
+                    isOwnCourse={isOwnCourse}
                     fetchUserCourses={fetchUserCourses}
+                    fetchCourseData={fetchCourseData}
                   />
                 )}
                 {content === "teachers" && (
@@ -224,7 +228,14 @@ export default function DetailCourse() {
   );
 }
 
-function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
+function Lessons({
+  courseID,
+  navigate,
+  enrolled,
+  isOwnCourse,
+  fetchUserCourses,
+  fetchCourseData,
+}) {
   const [lessonData, setLessonData] = useState({
     lessons: [],
     lessonsCount: 0,
@@ -239,6 +250,7 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
     try {
       await axios.post(`/courses/${courseID}/enroll`);
       fetchUserCourses();
+      fetchCourseData();
     } catch (err) {
       console.log(err);
     }
@@ -252,6 +264,7 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
     event.preventDefault();
     const input = searchInput.current.value;
     setSearch(input);
+    setCurrentPage(1);
   };
 
   const fetchLessonData = async () => {
@@ -293,7 +306,7 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
             </div>
           </Col>
           <Col xl={5} lg={12} md={12} sm={12}>
-            {!enrolled && (
+            {!enrolled && !isOwnCourse && (
               <div className="course-enroll">
                 <button onClick={handleEnrollCourse}>Tham gia khóa học</button>
               </div>
@@ -322,9 +335,9 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
       <div className="pagination">
         <Pagination.Prev
           className={currentPage === 1 ? "active" : ""}
-          onClick={() =>
-            currentPage > 1 ? handlePageChange(currentPage - 1) : null
-          }
+          onClick={() => {
+            if (currentPage > 1) handlePageChange(currentPage - 1);
+          }}
         />
         {[...Array(numberOfPages)].map((_, index) => {
           return (
@@ -338,11 +351,9 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
         })}
         <Pagination.Next
           className={currentPage === numberOfPages ? "active" : ""}
-          onClick={
-            currentPage < numberOfPages
-              ? handlePageChange(currentPage + 1)
-              : null
-          }
+          onClick={() => {
+            if (currentPage < numberOfPages) handlePageChange(currentPage + 1);
+          }}
         />
       </div>
     </>

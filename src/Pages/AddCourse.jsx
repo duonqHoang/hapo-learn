@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import "./AddCourse.scss";
-import { Button, Form, InputGroup, ListGroup } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  InputGroup,
+  ListGroup,
+  CloseButton,
+} from "react-bootstrap";
 import axios from "../Utils/axios";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
@@ -44,6 +50,10 @@ export default function AddCourse() {
       lessonNameRef.current.value = "";
       lessonTimeRef.current.value = "";
     }
+  };
+
+  const deleteLesson = (lesson) => {
+    setLessons(lessons.filter((item) => item !== lesson));
   };
 
   const handleSubmit = async (event) => {
@@ -117,6 +127,13 @@ export default function AddCourse() {
                   <div style={{ display: "inline-block" }}>{lesson.name}</div>
                   <div style={{ display: "inline-block", float: "right" }}>
                     Time: {lesson.time}h
+                    <CloseButton
+                      style={{
+                        verticalAlign: "middle",
+                        marginLeft: "190px",
+                      }}
+                      onClick={() => deleteLesson(lesson)}
+                    />
                   </div>
                 </ListGroup.Item>
               );
@@ -141,6 +158,7 @@ export default function AddCourse() {
             name="lessonTime"
             type="number"
             placeholder="Time"
+            step="0.1"
             min="0.1"
           />
           <Button

@@ -1,5 +1,11 @@
 import "./UpdateCourse.scss";
-import { Button, Form, InputGroup, ListGroup } from "react-bootstrap";
+import {
+  Button,
+  CloseButton,
+  Form,
+  InputGroup,
+  ListGroup,
+} from "react-bootstrap";
 import axios from "../Utils/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
@@ -69,6 +75,10 @@ export default function UpdateCourse() {
       lessonNameRef.current.value = "";
       lessonTimeRef.current.value = "";
     }
+  };
+
+  const deleteLesson = (lesson) => {
+    setLessons(lessons.filter((item) => item !== lesson));
   };
 
   const handleSubmit = async (event) => {
@@ -154,36 +164,51 @@ export default function UpdateCourse() {
             {lessons.map((lesson) => {
               return (
                 <ListGroup.Item>
-                  {lesson.name}, Time: {lesson.time}h
+                  <div style={{ display: "inline-block" }}>{lesson.name}</div>
+                  <div style={{ display: "inline-block", float: "right" }}>
+                    Time: {lesson.time}h
+                    <CloseButton
+                      style={{
+                        verticalAlign: "middle",
+                        marginLeft: "190px",
+                      }}
+                      onClick={() => deleteLesson(lesson)}
+                    />
+                  </div>
                 </ListGroup.Item>
               );
             })}
-            <InputGroup
-              style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-            >
-              <Form.Control
-                ref={lessonNameRef}
-                name="lessonName"
-                placeholder="Lesson name"
-                style={{ width: "55%" }}
-              />
-              <Form.Control
-                ref={lessonTimeRef}
-                name="lessonTime"
-                type="number"
-                min="0.1"
-                placeholder="Time"
-              />
-              <Button
-                variant="light"
-                className="add-lesson-btn"
-                onClick={addLesson}
-              >
-                <FaPlus />
-              </Button>
-            </InputGroup>
           </ListGroup>
         </Form.Group>
+        <InputGroup
+          style={{
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            marginTop: "10px",
+          }}
+        >
+          <Form.Control
+            ref={lessonNameRef}
+            name="lessonName"
+            placeholder="Lesson name"
+            style={{ width: "55%" }}
+          />
+          <Form.Control
+            ref={lessonTimeRef}
+            name="lessonTime"
+            type="number"
+            step="0.1"
+            min="0.1"
+            placeholder="Time"
+          />
+          <Button
+            variant="light"
+            className="add-lesson-btn"
+            onClick={addLesson}
+          >
+            <FaPlus />
+          </Button>
+        </InputGroup>
         <div className="btns">
           <Button
             variant="danger"
@@ -193,7 +218,7 @@ export default function UpdateCourse() {
             Delete course
           </Button>
           <button className="update-course-btn" type="submit">
-            Update course
+            Save changes
           </button>
         </div>
       </Form>
