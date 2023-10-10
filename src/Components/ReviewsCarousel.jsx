@@ -8,7 +8,6 @@ const settings = {
   speed: 500,
   autoplay: true,
   autoplaySpeed: 2000,
-  slidesToShow: 2,
   slidesToScroll: 1,
   pauseOnHover: true,
   responsive: [
@@ -33,7 +32,7 @@ const starStyles = {
 export default function ReviewsCarousel({ reviews }) {
   return (
     <div className="carousel">
-      <Slider {...settings}>
+      <Slider {...settings} {...{ slidesToShow: reviews.length > 1 ? 2 : 1 }}>
         {reviews.map((review) => {
           return (
             <div key={review.id} className="review-container">
@@ -44,7 +43,11 @@ export default function ReviewsCarousel({ reviews }) {
               <div className="review-info">
                 <div className="avatar">
                   <img
-                    src={`http://localhost:8080/images/${review.user.avatar}`}
+                    src={
+                      review.user
+                        ? `http://localhost:8080/images/${review.user.avatar}`
+                        : "images/user-avatar.jpg"
+                    }
                     alt="User avatar"
                     onError={(event) => {
                       event.currentTarget.src = "images/user-avatar.jpg";
@@ -52,7 +55,9 @@ export default function ReviewsCarousel({ reviews }) {
                   />
                 </div>
                 <div>
-                  <div className="userName">{review.user.name}</div>
+                  <div className="userName">
+                    {review?.user?.name || "Unnamed User"}
+                  </div>
                   <div className="courseName">{review.course.name}</div>
                   <Rating
                     itemStyles={starStyles}

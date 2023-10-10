@@ -143,11 +143,17 @@
     }
     .course-intro {
       color: #505050;
-      display: block;
       font-size: 18px;
-      font-weight: 400;
-      line-height: 25px;
-      letter-spacing: -0.9px;
+      line-height: 1.5em;
+      min-height: 6em;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+      -moz-box-orient: vertical;
+      -webkit-box-orient: vertical;
+      display: -moz-box;
+      display: -webkit-box;
     }
   }
 

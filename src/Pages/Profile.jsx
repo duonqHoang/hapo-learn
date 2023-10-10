@@ -1,7 +1,18 @@
-import { Row, Col, Container, Form } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Button,
+  Overlay,
+  Tooltip,
+} from "react-bootstrap";
 import { FaCamera } from "react-icons/fa";
 import "./Profile.scss";
 import { FaBirthdayCake, FaPhoneAlt, FaHome } from "react-icons/fa";
+import { FaGear } from "react-icons/fa6";
+import { MdWork } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { forwardRef, useEffect, useRef, useState } from "react";
@@ -17,8 +28,11 @@ export default function Profile() {
   const [error, setError] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [teacherModal, setTeacherModal] = useState(false);
+  const [tooltip, setTooltip] = useState(false);
+  const nameInput = useRef(null);
   const avtInput = useRef();
+  const roleInput = useRef();
 
   useEffect(() => {
     dispatch(getProfile());
@@ -43,6 +57,7 @@ export default function Profile() {
 
   const submitProfile = async (event) => {
     setError(null);
+    setTooltip(false);
     const form = event.currentTarget;
 
     if (form.checkValidity() === false) {
@@ -58,6 +73,7 @@ export default function Profile() {
           phone: form.phone.value,
           address: form.address.value,
           bio: form.bio.value,
+          role: form.role ? form.role.value : null,
         });
         dispatch(getProfile());
       } catch (err) {
@@ -81,8 +97,58 @@ export default function Profile() {
     }
   };
 
+  const handleClose = () => setTeacherModal(false);
+
+  const handleShow = () => {
+    if (!profile.name) {
+      setTooltip(true);
+      nameInput.current.scrollIntoView({
+        behavior: "auto",
+        block: "center",
+        inline: "center",
+      });
+    } else setTeacherModal(true);
+  };
+
+  const handleTeacherRegister = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post("/teachers", { role: roleInput.current.value });
+      dispatch(getProfile());
+      handleClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="profile-page">
+      <Modal show={teacherModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleTeacherRegister}>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Role</Form.Label>
+              <Form.Control
+                ref={roleInput}
+                placeholder="Enter your role to start teaching"
+                required
+                autoFocus
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleTeacherRegister}>
+            Start teaching
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Container>
         <Row>
           <Col xl={3} lg={4} md={12}>
@@ -111,10 +177,18 @@ export default function Profile() {
                   accept="image/png, image/jpeg"
                 />
 
-                <div className="profile-name">{profile.name}</div>
+                <div className="profile-name">
+                  {profile.name || "Unnamed User"}
+                </div>
                 <div className="profile-email">{profile.email}</div>
               </div>
               <div className="info-bottom">
+                {profile.teacherProfile && (
+                  <div className="info-row">
+                    <MdWork className="row-icon role-icon" />
+                    <span>{profile.teacherProfile.role}</span>
+                  </div>
+                )}
                 <div className="info-row">
                   <FaBirthdayCake className="row-icon birth-icon" />
                   <span>{profile.dob}</span>
@@ -133,6 +207,25 @@ export default function Profile() {
           </Col>
           <Col xl={9} lg={8} md={12}>
             <div className="profile-right">
+              {!profile.teacherProfile && (
+                <>
+                  <div className="teacher-register" onClick={handleShow}>
+                    Start teaching and share your knowledge!
+                  </div>
+                  <Overlay
+                    target={nameInput.current}
+                    show={tooltip}
+                    placement="top"
+                  >
+                    {(props) => (
+                      <Tooltip id="overlay" {...props}>
+                        Please update your name first...
+                      </Tooltip>
+                    )}
+                  </Overlay>
+                </>
+              )}
+
               <div className="section-title">
                 <div className="section-title-txt">My courses</div>
                 <div className="title-underline">
@@ -181,6 +274,69 @@ export default function Profile() {
                   <span>Add course</span>
                 </div>
               </div>
+              {profile.teacherProfile && (
+                <>
+                  <div className="section-title">
+                    <div className="section-title-txt">My teaching</div>
+                    <div className="title-underline">
+                      <div className="green-hr-line" />
+                      <div className="green-hr-line" />
+                    </div>
+                  </div>
+                  <div className="enrolled-courses">
+                    {profile?.teacherProfile?.courses.map((course) => {
+                      return (
+                        <div key={course.id} className="enrolled-course">
+                          <div style={{ position: "relative" }}>
+                            <div
+                              className="courseImg-container"
+                              onClick={() => navigate(`/courses/${course.id}`)}
+                            >
+                              <img
+                                src={`http://localhost:8080/images/${course.image}`}
+                                alt="course logo"
+                                onError={(event) => {
+                                  event.currentTarget.src = "hapowl.png";
+                                }}
+                              />
+                            </div>
+                            <div
+                              className="course-update-container"
+                              onClick={() =>
+                                navigate("/update-course/" + course.id)
+                              }
+                            >
+                              <FaGear className="course-update-btn" />
+                            </div>
+                          </div>
+                          <span>{course.name}</span>
+                        </div>
+                      );
+                    })}
+                    <div className="add-course">
+                      <button
+                        className="add-course-btn"
+                        onClick={() => navigate("/create-course")}
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M14.5714 9.42857H9.71429C9.5565 9.42857 9.42857 9.5565 9.42857 9.71429V14.5714C9.42857 15.3604 8.78892 16 8 16C7.21108 16 6.57143 15.3604 6.57143 14.5714V9.71429C6.57143 9.5565 6.4435 9.42857 6.28571 9.42857H1.42857C0.639648 9.42857 0 8.78892 0 8C0 7.21108 0.639648 6.57143 1.42857 6.57143H6.28571C6.4435 6.57143 6.57143 6.4435 6.57143 6.28571V1.42857C6.57143 0.639647 7.21108 0 8 0C8.78892 0 9.42857 0.639647 9.42857 1.42857V6.28571C9.42857 6.4435 9.5565 6.57143 9.71429 6.57143H14.5714C15.3604 6.57143 16 7.21108 16 8C16 8.78892 15.3604 9.42857 14.5714 9.42857Z"
+                            fill="#B2D235"
+                          />
+                        </svg>
+                      </button>
+                      <span>Add course</span>
+                    </div>
+                  </div>
+                </>
+              )}
+
               <div className="section-title">
                 <div className="section-title-txt">Edit profile</div>
                 <div className="title-underline">
@@ -201,6 +357,7 @@ export default function Profile() {
                       <Form.Group className="mt-3">
                         <Form.Label className="input-label">Name</Form.Label>
                         <Form.Control
+                          ref={nameInput}
                           name="name"
                           placeholder="Name"
                           defaultValue={profile.name}
@@ -226,6 +383,16 @@ export default function Profile() {
                           defaultValue={profile.address}
                         />
                       </Form.Group>
+                      {profile.teacherProfile && (
+                        <Form.Group className="mt-3">
+                          <Form.Label className="input-label">Role</Form.Label>
+                          <Form.Control
+                            name="role"
+                            placeholder="Role"
+                            defaultValue={profile.teacherProfile.role}
+                          />
+                        </Form.Group>
+                      )}
                     </Col>
                     <Col xl={6}>
                       <Form.Group className="mt-3">

@@ -5,26 +5,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../Utils/axios";
 
-/*
-const course = {
-  name: "HTML/CSS/Js",
-  img: "images/courses/html.png",
-  color: "#3F6185",
-  description:
-    "Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque. Pellentesque tristique fringilla tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla dignissim. Aenean viverra tincidunt nibh, in imperdiet nunc. Suspendisse eu ante pretium, consectetur leo at, congue quam. Nullam hendrerit porta ante vitae tristique.",
-  learners: 500,
-  lessons: 6,
-  tags: ,
-  price: 0,
-};
-
-const lesson = {
-  description:
-    "Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque. Pellentesque tristique fringilla tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla dignissim. Aenean viverra tincidunt nibh, in imperdiet nunc. Suspendisse eu ante pretium, consectetur leo at, congue quam. Nullam hendrerit porta ante vitae tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum ligula libero, feugiat faucibus mattis eget, pulvinar et ligula.",
-  requirement:
-    "Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada felis quis, ultricies convallis neque. Pellentesque tristique fringilla tempus. Vivamus bibendum nibh in dolor pharetra, a euismod nulla dignissim. Aenean viverra tincidunt nibh, in imperdiet nunc. Suspendisse eu ante pretium, consectetur leo at, congue quam. Nullam hendrerit porta ante vitae tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum ligula libero, feugiat faucibus mattis eget, pulvinar et ligula.",
-};
-*/
 const documents = [
   {
     type: "Lesson",
@@ -37,7 +17,7 @@ const documents = [
   { type: "Video", title: "Download course videos" },
 ];
 
-const tags = ["#learn", "#html", "#css", "#coder", "#developer", "#js"];
+const tags = ["#coder", "#js"];
 
 export default function LessonDetail() {
   const [content, setContent] = useState("descriptions");
@@ -76,9 +56,27 @@ export default function LessonDetail() {
     }
   };
 
+  const enrollCourse = async () => {
+    try {
+      await axios.post(`/courses/${params.courseID}/enroll`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const unEnrollCourse = async () => {
+    try {
+      await axios.post(`/courses/${params.courseID}/unenroll`);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchLessonData();
     fetchCourseData();
+    enrollCourse();
   }, []);
 
   return (
@@ -142,7 +140,7 @@ export default function LessonDetail() {
                     <span>Time</span>
                   </div>
                   <div className="colon">:</div>
-                  <div className="info-right">80 hours</div>
+                  <div className="info-right">{lesson.time}h</div>
                 </div>
                 <div className="info-row">
                   <div className="info-left">
@@ -162,7 +160,16 @@ export default function LessonDetail() {
                             </>
                           );
                         })
-                      : null}
+                      : tags.map((tag, i) => {
+                          return (
+                            <>
+                              <a key={i} href="#">
+                                {tag}
+                              </a>
+                              {i === tags.length - 1 ? "" : ", "}
+                            </>
+                          );
+                        })}
                   </div>
                 </div>
                 <div className="info-row">
@@ -175,12 +182,7 @@ export default function LessonDetail() {
                     {course.price === 0 ? "Free" : course.price}
                   </div>
                 </div>
-                <button
-                  className="course-stop-btn"
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
+                <button className="course-stop-btn" onClick={unEnrollCourse}>
                   Kết thúc khóa học
                 </button>
               </div>

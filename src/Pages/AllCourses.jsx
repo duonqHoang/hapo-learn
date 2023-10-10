@@ -129,7 +129,7 @@ export default function AllCourses() {
                 </div>
                 <div className="stat-col">
                   <span className="stat-title">Times</span>
-                  <span className="stat-number">{course.time}</span>
+                  <span className="stat-number">{course.time || "0"}(h)</span>
                 </div>
               </div>
             </div>
@@ -146,6 +146,7 @@ export default function AllCourses() {
         {[...Array(numberOfPages)].map((_, index) => {
           return (
             <Pagination.Item
+              key={index}
               className={index + 1 === currentPage ? "active" : ""}
               onClick={() => {
                 return currentPage !== index + 1
@@ -230,7 +231,7 @@ function Filters({ setSearchParams, handleFilter }) {
           isSearchable={false}
           placeholder="Teacher"
           options={teachers.map((teacher) => {
-            return { value: teacher.id, label: teacher.name };
+            return { value: teacher.id, label: teacher.user.name };
           })}
           onChange={(e) => handleFilter("teacher", e)}
         />

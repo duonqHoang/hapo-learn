@@ -9,6 +9,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [bestCourses, setBestCourses] = useState([]);
   const [bestReviews, setBestReviews] = useState([]);
+  const [stats, setStats] = useState({});
 
   const fetchBestCourses = async () => {
     try {
@@ -28,9 +29,19 @@ export default function Home() {
     }
   };
 
+  const fetchStatistics = async () => {
+    try {
+      const res = await axios.get("/courses-stats");
+      setStats(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchBestCourses();
     fetchBestReviews();
+    fetchStatistics();
   }, []);
 
   return (
@@ -139,15 +150,15 @@ export default function Home() {
         >
           <Col lg={4} md={4} sm={12} xs={12}>
             <div className="statType">Courses</div>
-            <div className="number">1234</div>
+            <div className="number">{stats.coursesCount || "0"}</div>
           </Col>
           <Col lg={4} md={4} sm={12} xs={12}>
             <div className="statType">Lessons</div>
-            <div className="number">1234</div>
+            <div className="number">{stats.lessonsCount || "0"}</div>
           </Col>
           <Col lg={4} md={4} sm={12} xs={12}>
             <div className="statType">Learners</div>
-            <div className="number">1234</div>
+            <div className="number">{stats.learnersCount || "0"}</div>
           </Col>
         </Row>
       </section>

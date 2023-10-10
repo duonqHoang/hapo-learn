@@ -8,6 +8,7 @@
 
 .profile-right {
   padding-top: 120px;
+  position: relative;
 }
 
 .info-top {
@@ -78,6 +79,10 @@
       margin-right: 20px;
     }
 
+    .role-icon {
+      color: #da737d;
+    }
+
     .birth-icon {
       color: #f26525;
     }
@@ -99,6 +104,22 @@
     text-align: justify;
     margin-top: 20px;
   }
+}
+
+.teacher-register {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  color: #b2d235;
+  font-family: "UTM BryantLG Bold";
+  font-size: 18px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.teacher-register:hover {
+  cursor: pointer;
+  filter: brightness(0.7);
 }
 
 .section-title {
@@ -139,11 +160,6 @@
     align-items: center;
   }
 
-  .enrolled-course:hover {
-    opacity: 80%;
-    cursor: pointer;
-  }
-
   .courseImg-container {
     width: 65px;
     height: 65px;
@@ -155,6 +171,11 @@
       height: 100%;
       object-fit: cover;
     }
+  }
+
+  .courseImg-container:hover {
+    opacity: 80%;
+    cursor: pointer;
   }
 
   .add-course {
@@ -174,6 +195,24 @@
     .add-course-btn:hover {
       opacity: 80%;
     }
+  }
+
+  .course-update-container {
+    background-color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+  }
+
+  .course-update-container > .course-update-btn:hover {
+    opacity: 0.8;
   }
 }
 
