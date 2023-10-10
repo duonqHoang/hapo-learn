@@ -20,11 +20,12 @@ export default function DetailCourse() {
   const [content, setContent] = useState("lessons");
   const [course, setCourse] = useState({});
   const [userCourses, setUserCourses] = useState([]);
-  const isLoggedIn = useSelector((state) => state.user.isAuthenticated);
+  const user = useSelector((state) => state.user);
+  const isLoggedIn = user.isAuthenticated;
+  const isOwnCourse = course.teacher?.id === user.profile.teacherProfile?.id;
   const navigate = useNavigate();
 
   const params = useParams();
-
   const enrolled = userCourses.find((course) => course.id == params.courseID)
     ? true
     : false;
@@ -60,17 +61,9 @@ export default function DetailCourse() {
     try {
       await axios.post(`/courses/${params.courseID}/unenroll`);
       fetchUserCourses();
+      fetchCourseData();
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  const changeContent = (newContent, e) => {
-    if (newContent !== content) setContent(newContent);
-    const current = document.querySelector(".current");
-    if (current !== e.target) {
-      current.classList.remove("current");
-      e.target.classList.add("current");
     }
   };
 
@@ -88,9 +81,9 @@ export default function DetailCourse() {
                 <img
                   src={`http://localhost:8080/images/${course.image}`}
                   alt="course logo image"
-                  onError={(event) => {
-                    event.currentTarget.src = "hapowl.png";
-                  }}
+                  // onError={(event) => {
+                  //   event.currentTarget.src = "hapowl.png";
+                  // }}
                 />
               </div>
             </Col>
@@ -106,15 +99,21 @@ export default function DetailCourse() {
               <div className="course-contents">
                 <div className="buttons">
                   <span
-                    className="current"
-                    onClick={(e) => changeContent("lessons", e)}
+                    className={content === "lessons" ? "current" : ""}
+                    onClick={() => setContent("lessons")}
                   >
                     Lessons
                   </span>
-                  <span onClick={(e) => changeContent("teachers", e)}>
+                  <span
+                    className={content === "teachers" ? "current" : ""}
+                    onClick={() => setContent("teachers")}
+                  >
                     Teacher
                   </span>
-                  <span onClick={(e) => changeContent("reviews", e)}>
+                  <span
+                    className={content === "reviews" ? "current" : ""}
+                    onClick={() => setContent("reviews")}
+                  >
                     Reviews
                   </span>
                 </div>
@@ -123,7 +122,9 @@ export default function DetailCourse() {
                     courseID={params.courseID}
                     navigate={navigate}
                     enrolled={enrolled}
+                    isOwnCourse={isOwnCourse}
                     fetchUserCourses={fetchUserCourses}
+                    fetchCourseData={fetchCourseData}
                   />
                 )}
                 {content === "teachers" && (
@@ -158,7 +159,7 @@ export default function DetailCourse() {
                     <span>Time</span>
                   </div>
                   <div className="colon">:</div>
-                  <div className="info-right">{course.time} hours</div>
+                  <div className="info-right">{course.time || "0"} hours</div>
                 </div>
                 <div className="info-col">
                   <div className="info-left">
@@ -227,7 +228,14 @@ export default function DetailCourse() {
   );
 }
 
-function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
+function Lessons({
+  courseID,
+  navigate,
+  enrolled,
+  isOwnCourse,
+  fetchUserCourses,
+  fetchCourseData,
+}) {
   const [lessonData, setLessonData] = useState({
     lessons: [],
     lessonsCount: 0,
@@ -242,6 +250,7 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
     try {
       await axios.post(`/courses/${courseID}/enroll`);
       fetchUserCourses();
+      fetchCourseData();
     } catch (err) {
       console.log(err);
     }
@@ -255,6 +264,7 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
     event.preventDefault();
     const input = searchInput.current.value;
     setSearch(input);
+    setCurrentPage(1);
   };
 
   const fetchLessonData = async () => {
@@ -296,7 +306,7 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
             </div>
           </Col>
           <Col xl={5} lg={12} md={12} sm={12}>
-            {!enrolled && (
+            {!enrolled && !isOwnCourse && (
               <div className="course-enroll">
                 <button onClick={handleEnrollCourse}>Tham gia khóa học</button>
               </div>
@@ -325,9 +335,9 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
       <div className="pagination">
         <Pagination.Prev
           className={currentPage === 1 ? "active" : ""}
-          onClick={() =>
-            currentPage > 1 ? handlePageChange(currentPage - 1) : null
-          }
+          onClick={() => {
+            if (currentPage > 1) handlePageChange(currentPage - 1);
+          }}
         />
         {[...Array(numberOfPages)].map((_, index) => {
           return (
@@ -341,11 +351,9 @@ function Lessons({ courseID, navigate, enrolled, fetchUserCourses }) {
         })}
         <Pagination.Next
           className={currentPage === numberOfPages ? "active" : ""}
-          onClick={
-            currentPage < numberOfPages
-              ? handlePageChange(currentPage + 1)
-              : null
-          }
+          onClick={() => {
+            if (currentPage < numberOfPages) handlePageChange(currentPage + 1);
+          }}
         />
       </div>
     </>
@@ -358,9 +366,17 @@ function Teachers({ teacher }) {
       <div className="teachers-title">Main Teachers</div>
       <div className="teacher">
         <div className="teacher-info">
-          <img src={"images/teacher-icon.png"} />
+          <div className="teacher-avt-container">
+            <img
+              src={`http://localhost:8080/images/${teacher.user.avatar}`}
+              alt="teacher avatar"
+              onError={(event) => {
+                event.currentTarget.src = "images/teacher-icon.png";
+              }}
+            />
+          </div>
           <div>
-            <div className="teacher-name">{teacher.name}</div>
+            <div className="teacher-name">{teacher.user.name}</div>
             <div className="teacher-position">{teacher.role}</div>
             <div className="social-links">
               {teacher?.links?.google && (
@@ -455,7 +471,7 @@ function Teachers({ teacher }) {
             </div>
           </div>
         </div>
-        <p className="teacher-description">{teacher.bio}</p>
+        <p className="teacher-description">{teacher.user.bio}</p>
       </div>
     </>
   );
@@ -467,7 +483,7 @@ const starStyles = {
   inactiveFillColor: "#D8D8D8",
 };
 
-function Reviews({ courseID, navigate }) {
+function Reviews({ courseID }) {
   const [reviewData, setReviewData] = useState({
     reviews: [],
     reviewsCount: 0,
@@ -565,11 +581,23 @@ function Reviews({ courseID, navigate }) {
         </Dropdown.Menu>
       </Dropdown>
       {reviewData.reviews.map((review) => {
-        const user = review.user || { name: "Anonymous" };
+        const user = review.user || { name: "Unnamed User" };
         return (
           <div className="review">
             <div className="review-header">
-              <img src={"images/user-avatar.jpg"} />
+              <div className="user-avt-container">
+                <img
+                  src={
+                    review.user
+                      ? `http://localhost:8080/images/${review.user.avatar}`
+                      : "images/user-avatar.jpg"
+                  }
+                  alt="user avatar"
+                  onError={(event) => {
+                    event.currentTarget.src = "images/user-avatar.jpg";
+                  }}
+                />
+              </div>
               <div className="user-name">{user.name}</div>
               <div style={{ display: "block", marginLeft: "15px" }}>
                 <Rating
